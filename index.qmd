@@ -1,6 +1,6 @@
 ---
 title: |
-  Fellowships in the \
+  Fellowships <span style="font-size: 5rem !important;">in the</span> \
   European Union
 description-title: |
   A dashboard for EU fellowship opportunities with filtering and search capabilities.
@@ -147,14 +147,14 @@ div(
       class = "filters",
       multi_select_filter(
         id = "filter_country",
-        label = "Country",
+        label = "Host country",
         shared_data = shared_countries,
         group = "Country",
         custom_order = c("EU")
       ),
       multi_select_filter(
         id = "filter_field",
-        label = "Discipline",
+        label = "Academic field",
         shared_data = shared_fields,
         group = "Discipline"
       )
