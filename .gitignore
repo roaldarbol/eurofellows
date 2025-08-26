@@ -3,3 +3,4 @@ renv
 .Rproj.user
 ~$*
 **/.DS_Store
+/.quarto/
