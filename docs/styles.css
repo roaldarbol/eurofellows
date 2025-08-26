@@ -63,6 +63,26 @@ h1 {
   justify-self: center;
 }
 
+@media screen and (max-width: 640px) {
+  .header-with-radio {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .header-with-radio .filter-title {
+    grid-column: 1;
+    justify-self: start;
+  }
+  
+  .header-with-radio .filter-input {
+    grid-column: 1;
+    justify-self: left;
+  }
+}
+
 .filters {
   display: flex;
   gap: 1rem;
