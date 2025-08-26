@@ -1,0 +1,46 @@
+project:
+  type: website
+
+website:
+  title: "EU Fellowship Database"
+  favicon: assets/eu-favicon.png
+  search: false
+  navbar:
+    title: false
+    style: "docked"
+    page-navigation: false
+    back-to-top-navigation: true
+    logo: assets/eu.jpg # assets/fox-contour.svg
+    background: "#003399" # Only for testing the fellowship dashboard
+    tools:
+      - icon: github
+        menu:
+          - text: Report an issue
+            href:  https://github.com/roaldarbol/eu-fellowships/issues
+          - text: Source Code
+            href:  https://github.com/roaldarbol/eu-fellowships
+      # - href: https://quarto.org/docs/websites/website-navigation.html
+      #   text: Contribute
+    right:
+      - href: https://opnform.com/forms/eu-fellowships-bliknk
+        target: _blank
+        text: Contribute
+  page-footer:
+    border: false
+    left: "2025, Mikkel Roald-Arbøl"
+    center:
+      - href: https://opnform.com/forms/eu-fellowships-bliknk
+        target: _blank
+        text: Contribute  
+    
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: false
+
+
+

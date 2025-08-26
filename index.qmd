@@ -1,0 +1,169 @@
+---
+title: |
+  Fellowships in the \
+  European Union
+description-title: |
+  A dashboard for EU fellowship opportunities with filtering and search capabilities.
+format: 
+  html:
+    page-layout: full
+    backgroundcolor: "#E6EEFF"
+    css: styles.css
+    header-includes: |
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+toc: false
+title-block-banner: "linear-gradient(rgba(0, 51, 153, 1), rgba(230, 238, 255, 0.3)), url('assets/eu.jpg')"
+---
+
+```{r setup}
+#| include: FALSE
+
+# Load required packages
+library(dplyr)
+library(reactable)
+library(htmltools)
+library(jsonlite)
+library(readxl)
+library(crosstalk)
+library(janitor)
+library(stringr)
+library(lubridate)
+library(cli)
+
+# Source filter functions
+source("R/filters.R")
+source("R/card_renderer.R")
+
+set.seed(123)
+```
+
+```{r load-data}
+#| include: FALSE
+
+# Load and clean data
+data <- read_xlsx("data/eu-fellowships.xlsx") |>
+  clean_names(case = "title") |>
+  arrange(Deadline) |>
+  mutate(
+    Deadline = format(Deadline, "%d %b %Y"),
+    Discipline = str_to_title(Discipline),
+    `Career Stage` = if_else(`Career Stage` == "postdoc", "Postdoc", "PhD")
+  )
+
+# Validate required columns
+required_cols <- c("Title", "Country", "Discipline", "Career Stage", "Deadline", "Url")
+missing_cols <- setdiff(required_cols, names(data))
+
+if (length(missing_cols) > 0) {
+  cli_abort("Missing required columns: {paste(missing_cols, collapse = ', ')}")
+}
+
+cli_alert_success("Loaded {nrow(data)} fellowship records")
+```
+
+```{r setup-crosstalk}
+#| include: FALSE
+
+# Create shared data objects for crosstalk filtering
+shared_fellowships <- SharedData$new(data)
+shared_countries <- SharedData$new(data, group = shared_fellowships$groupName())
+shared_fields <- SharedData$new(data, group = shared_fellowships$groupName())
+shared_career_stage <- SharedData$new(data, group = shared_fellowships$groupName())
+```
+
+```{r create-table}
+#| include: FALSE
+
+# Create the main reactable
+fellowship_table <- reactable(
+  shared_fellowships,
+  filterable = FALSE,
+  searchable = FALSE,
+  highlight = FALSE,
+  striped = FALSE,
+  wrap = TRUE,
+  class = "fellowship-table",
+  pagination = TRUE,
+  defaultPageSize = 12,
+  
+  columns = list(
+    Title = colDef(
+      cell = render_fellowship_card,
+      html = TRUE
+    ),
+    # Hide all other columns
+    Deadline = colDef(show = FALSE),
+    Country = colDef(show = FALSE),
+    Institution = colDef(show = FALSE),
+    Discipline = colDef(show = FALSE),
+    Duration = colDef(show = FALSE),
+    Url = colDef(show = FALSE),
+    Description = colDef(show = FALSE),
+    Funder = colDef(show = FALSE),
+    `Career Stage` = colDef(show = FALSE),
+    `Last Updated` = colDef(show = FALSE),
+    `Phd Title` = colDef(show = FALSE),
+    `Max Post Phd` = colDef(show = FALSE),
+    `Min Post Phd` = colDef(show = FALSE),
+    Nationality = colDef(show = FALSE),
+    Mobility = colDef(show = FALSE)
+  ),
+  
+  rowStyle = list(cursor = "default"),
+  theme = reactableTheme(
+    cellPadding = "6px 10px",
+    searchInputStyle = list(width = "100%")
+  )
+)
+```
+
+```{r create-ui}
+#| echo: FALSE
+
+# Assemble the complete UI
+div(
+  class = "fellowships",
+  
+  # Filter section
+  tags$div(
+    class = "filter-box",
+    
+    # Header with career stage filter
+    tags$div(
+      class = "header-with-radio",
+      tags$h4(class = "filter-title", "Filter fellowships"),
+      radio_filter(
+        id = "filter_career_stage",
+        label = "Career Stage",
+        shared_data = shared_career_stage,
+        group = "Career Stage"
+      )
+    ),
+    
+    # Other filters
+    tags$div(
+      class = "filters",
+      multi_select_filter(
+        id = "filter_country",
+        label = "Country",
+        shared_data = shared_countries,
+        group = "Country",
+        custom_order = c("EU")
+      ),
+      multi_select_filter(
+        id = "filter_field",
+        label = "Discipline",
+        shared_data = shared_fields,
+        group = "Discipline"
+      )
+    )
+  ),
+  
+  tags$hr(),
+  
+  # Fellowship cards table
+  fellowship_table
+)
+```
