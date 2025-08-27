@@ -43,29 +43,21 @@ set.seed(123)
 #| include: FALSE
 
 # Load and clean data
-data <- read_xlsx("data/eu-fellowships.xlsx") |>
-  clean_names(case = "title") |>
-  arrange(Deadline) |>
-  mutate(
-    Deadline = format(Deadline, "%d %b %Y"),
-    Discipline = str_to_title(Discipline),
-    `Career Stage` = if_else(`Career Stage` == "postdoc", "Postdoc", "PhD")
-  )
+# data <- read_xlsx("data/eu-fellowships.xlsx") |>
+#   clean_names(case = "title") |>
+#   arrange(Deadline) |>
+#   mutate(
+#     Deadline = format(Deadline, "%d %b %Y"),
+#     Discipline = if_else(is.na(Discipline), "Any field", Discipline),
+#     Discipline = str_to_sentence(Discipline),
+#     `Career Stage` = if_else(`Career Stage` == "postdoc", "Postdoc", "PhD")
+#   )
 
-# Validate required columns
-required_cols <- c("Title", "Country", "Discipline", "Career Stage", "Deadline", "Url")
-missing_cols <- setdiff(required_cols, names(data))
-
-if (length(missing_cols) > 0) {
-  cli_abort("Missing required columns: {paste(missing_cols, collapse = ', ')}")
-}
-
-cli_alert_success("Loaded {nrow(data)} fellowship records")
+data <- vroom::vroom("data/eu-fellowships.csv")
 ```
 
 ```{r setup-crosstalk}
 #| include: FALSE
-
 # Create shared data objects for crosstalk filtering
 shared_fellowships <- SharedData$new(data)
 shared_countries <- SharedData$new(data, group = shared_fellowships$groupName())
@@ -89,26 +81,31 @@ fellowship_table <- reactable(
   defaultPageSize = 12,
   
   columns = list(
-    Title = colDef(
+    fellowship_title = colDef(
       cell = render_fellowship_card,
       html = TRUE
     ),
     # Hide all other columns
-    Deadline = colDef(show = FALSE),
-    Country = colDef(show = FALSE),
-    Institution = colDef(show = FALSE),
-    Discipline = colDef(show = FALSE),
-    Duration = colDef(show = FALSE),
-    Url = colDef(show = FALSE),
-    Description = colDef(show = FALSE),
-    Funder = colDef(show = FALSE),
-    `Career Stage` = colDef(show = FALSE),
-    `Last Updated` = colDef(show = FALSE),
-    `Phd Title` = colDef(show = FALSE),
-    `Max Post Phd` = colDef(show = FALSE),
-    `Min Post Phd` = colDef(show = FALSE),
-    Nationality = colDef(show = FALSE),
-    Mobility = colDef(show = FALSE)
+    id = colDef(show = FALSE),
+    career_stage = colDef(show = FALSE),
+    fellowship_funder = colDef(show = FALSE),
+    fellowship_url = colDef(show = FALSE),
+    fellowship_duration = colDef(show = FALSE),
+    application_deadline = colDef(show = FALSE),
+    eligible_host_location = colDef(show = FALSE),
+    eligible_institution = colDef(show = FALSE),
+    eligible_nationalities = colDef(show = FALSE),
+    eligible_fields = colDef(show = FALSE),
+    field_category_major = colDef(show = FALSE),
+    field_category_minor = colDef(show = FALSE),
+    requires_mobility = colDef(show = FALSE),
+    requires_phd = colDef(show = FALSE),
+    requires_publication = colDef(show = FALSE),
+    minimum_years_post_phd = colDef(show = FALSE),
+    maximum_years_in_postdoc = colDef(show = FALSE),
+    contributor_name = colDef(show = FALSE),
+    contributor_url = colDef(show = FALSE),
+    date_created = colDef(show = FALSE)
   ),
   
   rowStyle = list(cursor = "default"),
@@ -138,7 +135,7 @@ div(
         id = "filter_career_stage",
         label = "Career Stage",
         shared_data = shared_career_stage,
-        group = "Career Stage"
+        group = "career_stage"
       )
     ),
     
@@ -147,16 +144,18 @@ div(
       class = "filters",
       multi_select_filter(
         id = "filter_country",
-        label = "Host country",
+        label = "Host countries",
         shared_data = shared_countries,
-        group = "Country",
-        custom_order = c("EU")
+        group = "eligible_host_location",
+        # custom_order = c("EU"),
+        catchall_input = "Any EU country"
       ),
       multi_select_filter(
         id = "filter_field",
-        label = "Academic field",
+        label = "Academic fields",
         shared_data = shared_fields,
-        group = "Discipline"
+        group = "eligible_fields",
+        catchall_input = "Any field"
       )
     )
   ),

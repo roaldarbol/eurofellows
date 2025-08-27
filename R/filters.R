@@ -82,7 +82,7 @@ radio_filter <- function(id, label, shared_data, group, width = "100%",
 #' @param class CSS class for styling
 #' @param custom_order Optional vector specifying custom ordering of options
 multi_select_filter <- function(id, label, shared_data, group, width = "100%", 
-                                class = "filter-input", custom_order = NULL) {
+                                class = "filter-input", custom_order = NULL, catchall_input = "any") {
   
   # Extract and process values from comma-separated strings
   raw_vals <- shared_data$data()[[group]]
@@ -103,7 +103,7 @@ multi_select_filter <- function(id, label, shared_data, group, width = "100%",
   # Create option list
   raw_pieces <- unique(unlist(strsplit(raw_vals, ",\\s*"))) |>
     trimws() |>
-    (\(x) x[x != "" & tolower(x) != "any"])()
+    (\(x) x[x != "" & x != catchall_input])()
   
   # Apply custom ordering if provided
   if (!is.null(custom_order)) {
@@ -154,7 +154,7 @@ multi_select_filter <- function(id, label, shared_data, group, width = "100%",
       size = 4,
       onchange = sprintf("window['__ct__%s'].filter()", id),
       style = sprintf("width: %s", validateCssUnit(width)),
-      tags$option(value = "", "Any"),
+      tags$option(value = "", catchall_input),
       lapply(seq_len(nrow(opts_df)), function(i) {
         tags$option(value = opts_df$value[i], opts_df$display[i])
       })
