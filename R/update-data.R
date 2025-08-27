@@ -1,0 +1,86 @@
+library(vroom)
+library(dplyr)
+library(janitor)
+library(lubridate)
+
+new_data <- vroom::vroom("data/new-eu-fellowships.csv") |> 
+  janitor::clean_names()
+
+if (nrow(new_data) != 0){
+  new_data <- new_data |> 
+    rename(fellowship_funder = funder,
+           fellowship_url = link,
+           fellowship_duration = duration,
+           eligible_host_location = location,
+           eligible_institution = institution,
+           eligible_fields = academic_fields,
+           field_category_major = major_field,
+           field_category_minor = minor_field,
+           requires_mobility = mobility_required,
+           requires_phd = ph_d_certificate_required,
+           requires_publication = publication_required,
+           minimum_years_post_phd = minimum_years_post_ph_d_2,
+           maximum_years_in_postdoc = maximum_years_post_docing_2,
+           contributor_name = your_name,
+           contributor_url = profile_url,
+           date_created = created_at) |> 
+    mutate(
+      career_stage = as.factor(career_stage),
+      eligible_host_location = if_else(
+        eligible_host_location == "Specific EU countries",
+        eligible_countries,
+        eligible_host_location
+      ),
+      eligible_nationalities = if_else(
+        eligible_nationalities_23 == "Specific EU countries", 
+        eligible_nationalities_24, 
+        eligible_nationalities_23),
+      field_category_major = as.factor(field_category_major),
+      field_category_minor = as.factor(field_category_minor),
+      application_deadline = lubridate::date(application_deadline),
+      date_created = lubridate::date(date_created),
+      requires_mobility = if_else(
+        isTRUE(requires_mobility),
+        TRUE,
+        FALSE),
+      requires_phd = if_else(
+        isTRUE(requires_phd),
+        TRUE,
+        FALSE),
+      requires_publication = if_else(
+        isTRUE(requires_publication),
+        TRUE,
+        FALSE
+      ),
+      minimum_years_post_phd = as.numeric(minimum_years_post_phd),
+      maximum_years_in_postdoc = as.numeric(maximum_years_in_postdoc),
+      contributor_name = as.character(contributor_name),
+      contributor_url = as.character(contributor_url)) |> 
+    dplyr::select(
+      -c(eligible_countries,
+         limited_to_specific_institution, 
+         only_available_within_specific_fields,
+         minimum_years_post_ph_d,
+         maximum_years_post_docing,
+         eligible_nationalities_23,
+         eligible_nationalities_24)) |> 
+    relocate(eligible_nationalities, .after = eligible_institution) |> 
+    relocate(fellowship_duration, .after = fellowship_url)
+  
+  attributes(new_data)$spec <- NULL
+}
+
+# Update the file
+vroom::vroom_write(new_data, "data/eu-fellowships.csv", delim = ";", append = TRUE)
+
+# Write older entries over to a different file
+today_date <- lubridate::today()
+current_fellowships <- vroom::vroom("data/eu-fellowships.csv")                
+past_fellowships <- current_fellowships |> 
+  filter(application_deadline < today_date)
+
+if (nrow(past_fellowships) != 0){
+  future_fellowships <- anti_join(current_fellowships, past_fellowships)
+  vroom::vroom_write(future_fellowships, "data/eu-fellowships.csv", delim = ";")
+  vroom::vroom_write(past_fellowships, "data/eu-fellowships-past.csv", delim = ";", append = TRUE)
+}
