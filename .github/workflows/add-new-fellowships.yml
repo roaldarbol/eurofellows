@@ -27,9 +27,13 @@ jobs:
 
       # Installs dependencies with renv
       - name: Install dependencies with renv
-        uses: r-lib/actions/setup-renv@v2
+        uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          cache-version: 1
+          packages:
+            any::vroom
+            any::dplyr
+            any::lubridate
+            any::janitor
 
       # Runs the 
       - name: Transfer past fellowships
