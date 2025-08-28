@@ -9,6 +9,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'data/eu-fellowships-new.csv'      # only if there's new data
+  workflow_dispatch:
 
 jobs:
   add-new-fellowships:
