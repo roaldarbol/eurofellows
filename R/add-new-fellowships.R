@@ -2,8 +2,11 @@ library(vroom)
 library(dplyr)
 library(janitor)
 library(lubridate)
+library(here)
 
-new_data <- vroom::vroom("data/new-eu-fellowships.csv") |> 
+here::i_am("data", "add-new-fellowships.R")
+
+new_data <- vroom::vroom(here::here("data", "eu-fellowships-new.csv")) |> 
   janitor::clean_names()
 
 if (nrow(new_data) != 0){
@@ -71,4 +74,4 @@ if (nrow(new_data) != 0){
 }
 
 # Update the file
-vroom::vroom_write(new_data, "data/eu-fellowships.csv", delim = ";", append = TRUE)
+vroom::vroom_write(new_data, here::here("data", "eu-fellowships.csv"), delim = ";", append = TRUE)
