@@ -8,7 +8,7 @@ new_data <- vroom::vroom("data/new-eu-fellowships.csv") |>
 
 if (nrow(new_data) != 0){
   new_data <- new_data |> 
-    rename(fellowship_funder = funder,
+    dplyr::rename(fellowship_funder = funder,
            fellowship_url = link,
            fellowship_duration = duration,
            eligible_host_location = location,
@@ -24,14 +24,14 @@ if (nrow(new_data) != 0){
            contributor_name = your_name,
            contributor_url = profile_url,
            date_created = created_at) |> 
-    mutate(
+    dplyr::mutate(
       career_stage = as.factor(career_stage),
-      eligible_host_location = if_else(
+      eligible_host_location = dplyr::if_else(
         eligible_host_location == "Specific EU countries",
         eligible_countries,
         eligible_host_location
       ),
-      eligible_nationalities = if_else(
+      eligible_nationalities = dplyr::if_else(
         eligible_nationalities_23 == "Specific EU countries", 
         eligible_nationalities_24, 
         eligible_nationalities_23),
@@ -39,15 +39,15 @@ if (nrow(new_data) != 0){
       field_category_minor = as.factor(field_category_minor),
       application_deadline = lubridate::date(application_deadline),
       date_created = lubridate::date(date_created),
-      requires_mobility = if_else(
+      requires_mobility = dplyr::if_else(
         isTRUE(requires_mobility),
         TRUE,
         FALSE),
-      requires_phd = if_else(
+      requires_phd = dplyr::if_else(
         isTRUE(requires_phd),
         TRUE,
         FALSE),
-      requires_publication = if_else(
+      requires_publication = dplyr::if_else(
         isTRUE(requires_publication),
         TRUE,
         FALSE
@@ -64,23 +64,11 @@ if (nrow(new_data) != 0){
          maximum_years_post_docing,
          eligible_nationalities_23,
          eligible_nationalities_24)) |> 
-    relocate(eligible_nationalities, .after = eligible_institution) |> 
-    relocate(fellowship_duration, .after = fellowship_url)
+    dplyr::relocate(eligible_nationalities, .after = eligible_institution) |> 
+    dplyr::relocate(fellowship_duration, .after = fellowship_url)
   
   attributes(new_data)$spec <- NULL
 }
 
 # Update the file
 vroom::vroom_write(new_data, "data/eu-fellowships.csv", delim = ";", append = TRUE)
-
-# Write older entries over to a different file
-today_date <- lubridate::today()
-current_fellowships <- vroom::vroom("data/eu-fellowships.csv")                
-past_fellowships <- current_fellowships |> 
-  filter(application_deadline < today_date)
-
-if (nrow(past_fellowships) != 0){
-  future_fellowships <- anti_join(current_fellowships, past_fellowships)
-  vroom::vroom_write(future_fellowships, "data/eu-fellowships.csv", delim = ";")
-  vroom::vroom_write(past_fellowships, "data/eu-fellowships-past.csv", delim = ";", append = TRUE)
-}
