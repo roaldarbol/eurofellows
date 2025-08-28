@@ -1,0 +1,305 @@
+/* ===================================================================
+   TYPOGRAPHY & FONTS
+   =================================================================== */
+
+#quarto-document-content .title {
+  display: none;
+}
+
+.navbar, .nav-footer {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+h1 {
+  font-size: 7rem;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@media screen and (max-width: 640px) {
+  h1 {
+    font-size: 5rem;
+  }
+}
+
+/* ===================================================================
+   FILTER SECTION
+   =================================================================== */
+
+.filter-box {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  padding: 24px 32px 32px 32px;
+  margin-bottom: 16px;
+}
+
+.filter-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+  color: #212529;
+}
+
+.header-with-radio {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.header-with-radio .filter-title {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.header-with-radio .filter-input {
+  grid-column: 2;
+  justify-self: center;
+}
+
+@media screen and (max-width: 640px) {
+  .header-with-radio {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .header-with-radio .filter-title {
+    grid-column: 1;
+    justify-self: start;
+  }
+  
+  .header-with-radio .filter-input {
+    grid-column: 1;
+    justify-self: left;
+  }
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-weight: 600;
+}
+
+.filter-input {
+  flex: 1 1 48%;
+  min-width: 200px;
+}
+
+/* Radio button styling */
+.radio-group {
+  font-size: 2rem;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.radio-option input[type="radio"] {
+  margin: 0;
+}
+
+.radio-option label {
+  margin: 0;
+  cursor: pointer;
+}
+
+select {
+  background-color: #fff;
+}
+
+/* ===================================================================
+   FELLOWSHIP CARDS & TABLE
+   =================================================================== */
+
+.fellowship-table .rt-tbody {
+  display: block;
+  width: 100%;
+  background-color: #E6EEFF;
+}
+
+.fellowship-table .rt-tr-group {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.5rem;
+  cursor: default;
+  transition: transform .1s ease-in-out, box-shadow .1s;
+}
+
+.fellowship-table .rt-tr-group:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+
+.fellowship-table .rt-th {
+  display: none;
+}
+
+.rt-tr-group .rt-td:first-child {
+  border-top: none !important;
+}
+
+/* ===================================================================
+   CARD CONTENT
+   =================================================================== */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4px;
+  position: relative;
+  border-color: transparent !important;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+  background-color: #fff;
+  border-color: transparent !important;
+}
+
+.title-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #212529;
+}
+
+.deadline-text {
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: #212529;
+}
+
+.deadline-text img,
+.deadline-text span {
+  vertical-align: middle;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: left;
+  margin-bottom: .6rem;
+  text-decoration: none;
+}
+
+.card-title:hover {
+  text-decoration: underline;
+}
+
+.card-field {
+  font-size: .88rem;
+  margin: .15rem 0;
+}
+
+.card-field b {
+  font-weight: 600;
+}
+
+/* ===================================================================
+   EXPANDABLE DESCRIPTION
+   =================================================================== */
+
+details {
+  border: none;
+  outline: none;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+}
+
+details > summary {
+  cursor: pointer;
+  color: #1976d2;
+  font-weight: 600;
+  font-size: .88rem;
+  margin: .15rem 0;
+  list-style: none;
+  transition: color 0.2s ease;
+}
+
+details > summary:hover {
+  color: #254eda;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+details > p {
+  margin: 0;
+  line-height: 1.45;
+  color: #444;
+}
+
+.summary-label {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.summary-label:hover {
+  color: #1976d2;
+}
+
+/* ===================================================================
+   BUTTONS & ACTIONS
+   =================================================================== */
+
+.button-wrapper {
+  align-self: flex-end;
+  margin-top: 0;
+  margin-bottom: auto;
+}
+
+.apply-btn {
+  display: inline-block;
+  padding: .35rem .7rem;
+  background: #3366ff;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 600;
+}
+
+.apply-btn:hover {
+  background: #254eda;
+}
+
+/* ===================================================================
+   CSS CUSTOM PROPERTIES
+   =================================================================== */
+
+:root {
+  --bs-card-border-color: transparent;
+}
