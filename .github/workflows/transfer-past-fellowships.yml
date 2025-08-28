@@ -29,4 +29,4 @@ jobs:
 
       # Transfer past fellowships
       - name: Transfer past fellowships
-        run: Rscript -e R/transfer-past-fellowships.R
+        run: Rscript R/transfer-past-fellowships.R

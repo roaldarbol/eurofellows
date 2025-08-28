@@ -25,8 +25,8 @@ jobs:
         with:
           r-version: '4.4.2' # The R version to download (if necessary) and use.
 
-      # Installs dependencies with renv
-      - name: Install dependencies with renv
+      # Installs dependencies
+      - name: Install dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
           packages:
@@ -37,4 +37,4 @@ jobs:
 
       # Runs the 
       - name: Transfer past fellowships
-        run: Rscript -e R/add-new-fellowships.R
+        run: Rscript R/add-new-fellowships.R
