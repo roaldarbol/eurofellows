@@ -20,15 +20,11 @@ jobs:
         with:
           r-version: '4.4.2' # The R version to download (if necessary) and use.
 
-      # Install dependencies
-      - name: Install dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
+      # Install dependencies with renv
+      - name: Install dependencies with renv
+        uses: r-lib/actions/setup-renv@v2
         with:
-          packages:
-            any::vroom
-            any::dplyr
-            any::lubridate
-            any::here
+          cache-version: 1
 
       # Transfer past fellowships
       - name: Transfer past fellowships
