@@ -4,7 +4,7 @@ library(janitor)
 library(lubridate)
 library(here)
 
-here::i_am("data", "add-new-fellowships.R")
+here::i_am("R/add-new-fellowships.R")
 
 new_data <- vroom::vroom(here::here("data", "eu-fellowships-new.csv")) |> 
   janitor::clean_names()

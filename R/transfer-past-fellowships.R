@@ -2,7 +2,7 @@ library(vroom)
 library(dplyr)
 library(lubridate)
 
-here::i_am("data", "transfer-past-fellowships.R")
+here::i_am("R/transfer-past-fellowships.R")
 
 # Write older entries over to a different file
 today_date <- lubridate::today()
