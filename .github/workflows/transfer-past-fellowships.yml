@@ -28,6 +28,7 @@ jobs:
             any::vroom
             any::dplyr
             any::lubridate
+            any::here
 
       # Transfer past fellowships
       - name: Transfer past fellowships
