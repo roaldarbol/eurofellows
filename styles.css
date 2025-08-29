@@ -21,7 +21,8 @@ h1 {
 
 @media screen and (max-width: 640px) {
   h1 {
-    font-size: 5rem;
+    font-size: clamp(4.5rem, 4vw, 6rem);
+    overflow-wrap: anywhere;
   }
 }
 
@@ -127,13 +128,27 @@ select {
 }
 
 /* ===================================================================
-   FELLOWSHIP CARDS & TABLE
+   FELLOWSHIP CARDS & TABLE - ENHANCED DESIGN
    =================================================================== */
 
-.fellowship-table .rt-tbody {
+/* Table container styling */
+.fellowship-table.enhanced-cards .rt-table {
+  background: #E7EFFF;
+}
+
+.fellowship-table.enhanced-cards .rt-tbody {
   display: block;
   width: 100%;
-  background-color: #E6EEFF;
+  background-color: #E7EFFF;
+}
+
+.fellowship-table.enhanced-cards .rt-tbody .rt-tr {
+  background: transparent;
+}
+
+.fellowship-table.enhanced-cards .rt-tbody .rt-td {
+  border: none;
+  padding: 8px 0;
 }
 
 .fellowship-table .rt-tr-group {
@@ -141,19 +156,19 @@ select {
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.06);
-  padding: 0.6rem 1rem;
-  margin-bottom: 1.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 8px 0;
+  margin-bottom: 0;
   cursor: default;
-  transition: transform .1s ease-in-out, box-shadow .1s;
+  transition: none;
 }
 
 .fellowship-table .rt-tr-group:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  transform: none;
+  box-shadow: none;
 }
 
 .fellowship-table .rt-th {
@@ -165,7 +180,232 @@ select {
 }
 
 /* ===================================================================
-   CARD CONTENT
+   ENHANCED FELLOWSHIP CARDS
+   =================================================================== */
+
+/* Card container styling */
+.fellowship-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin: 6px 0;
+  border-left: 4px solid #3b82f6;
+  position: relative;
+  transition: box-shadow 0.2s ease;
+}
+
+.fellowship-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Urgency-based border colors and backgrounds */
+.fellowship-card.urgency-critical {
+  border-left-color: #ef4444;
+  background: linear-gradient(to right, #fef2f2 0%, white 20%);
+}
+
+.fellowship-card.urgency-warning {
+  border-left-color: #f59e0b;
+  background: linear-gradient(to right, #fffbeb 0%, white 20%);
+}
+
+.fellowship-card.urgency-normal {
+  border-left-color: #3b82f6;
+  background: linear-gradient(to right, #eff6ff 0%, white 20%);
+}
+
+.fellowship-card.urgency-passed {
+  border-left-color: #6b7280;
+  background: linear-gradient(to right, #f9fafb 0%, white 20%);
+  opacity: 0.7;
+}
+
+/* Enhanced card header */
+.fellowship-card .card-header {
+  margin-bottom: 12px;
+  padding-right: 32px;
+  display: block;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: transparent;
+  border-color: transparent !important;
+}
+
+.fellowship-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #111827;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.fellowship-funder {
+  font-size: 16px;
+  font-weight: 500;
+  color: #374151;
+  margin: 0;
+}
+
+/* Details grid layout */
+.card-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.detail-icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.detail-text {
+  font-size: 14px;
+}
+
+/* Deadline section with urgency indicators */
+.deadline-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.deadline-date {
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.urgency-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.urgency-badge.urgency-critical {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.urgency-badge.urgency-warning {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.urgency-badge.urgency-normal {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.urgency-badge.urgency-passed {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+/* Fields section */
+.fields-section {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.fields-text {
+  font-size: 14px;
+  color: #374151;
+}
+
+/* Requirements badges */
+.requirements-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.requirement-badge {
+  padding: 4px 8px;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 12px;
+  border-radius: 12px;
+}
+
+/* Special notes for experience limits - now as compact badges */
+.special-notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.special-note {
+  display: inline-flex;
+  align-items: center;
+  background: #f3f4f6;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+
+.special-note .detail-icon {
+  margin-right: 4px;
+  font-size: 14px;
+}
+
+/* Enhanced action buttons */
+.card-actions {
+  padding-top: 6px;
+}
+
+.learn-more-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white !important;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.learn-more-btn:hover {
+  background: #2563eb;
+  color: white !important;
+  text-decoration: none;
+}
+
+.external-icon {
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+/* Attribution styling */
+.card-attribution {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 1px solid #f3f4f6;
+}
+
+/* ===================================================================
+   LEGACY CARD STYLES (for backward compatibility)
    =================================================================== */
 
 .card {
@@ -174,15 +414,6 @@ select {
   justify-content: flex-start;
   gap: 4px;
   position: relative;
-  border-color: transparent !important;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 4px;
-  background-color: #fff;
   border-color: transparent !important;
 }
 
@@ -272,7 +503,7 @@ details > p {
 }
 
 /* ===================================================================
-   BUTTONS & ACTIONS
+   LEGACY BUTTONS & ACTIONS (for backward compatibility)
    =================================================================== */
 
 .button-wrapper {
@@ -294,6 +525,30 @@ details > p {
 
 .apply-btn:hover {
   background: #254eda;
+}
+
+/* ===================================================================
+   MOBILE RESPONSIVENESS
+   =================================================================== */
+
+@media (max-width: 768px) {
+  .fellowship-card {
+    padding: 16px;
+    margin: 4px 0;
+  }
+  
+  .card-details-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .fellowship-title {
+    font-size: 18px;
+  }
+  
+  .fellowship-funder {
+    font-size: 14px;
+  }
 }
 
 /* ===================================================================
