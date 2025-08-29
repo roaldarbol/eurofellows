@@ -25,14 +25,10 @@ website:
     right:
       - href: https://opnform.com/forms/eu-fellowships-bliknk
         target: _blank
-        text: Contribute
+        text: Submit fellowship
   page-footer:
     border: false
-    left: "2025, Mikkel Roald-Arbøl"
-    center:
-      - href: https://opnform.com/forms/eu-fellowships-bliknk
-        target: _blank
-        text: Contribute  
+    center: "2025, Mikkel Roald-Arbøl"
     
 
 format:
