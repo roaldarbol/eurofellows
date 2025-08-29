@@ -3,10 +3,10 @@ name: render-dashboard.yml
 on:
   push:
     branches: [ "main" ]
-    paths: ['data/eu-fellowships.csv']
+    paths: ['data/eu-fellowships.csv', '_quarto.yml', 'index.qmd', 'styles.css', 'R/card-renderer.R', 'R/filters.R']
   pull_request:
     branches: [ "main" ]
-    paths: ['data/eu-fellowships.csv']
+    paths: ['data/eu-fellowships.csv', '_quarto.yml', 'index.qmd', 'styles.css', 'R/card-renderer.R', 'R/filters.R']
   workflow_dispatch:
 
 jobs:
