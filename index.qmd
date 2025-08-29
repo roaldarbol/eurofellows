@@ -1,6 +1,6 @@
 ---
 title: |
-  Fellowships <span style="font-size: 5rem !important;">in the</span> \
+  Fellowships <span style="font-size: 80% !important;">in the</span> \
   European Union
 description-title: |
   A dashboard for EU fellowship opportunities with filtering and search capabilities.
@@ -41,18 +41,6 @@ set.seed(123)
 
 ```{r load-data}
 #| include: FALSE
-
-# Load and clean data
-# data <- read_xlsx("data/eu-fellowships.xlsx") |>
-#   clean_names(case = "title") |>
-#   arrange(Deadline) |>
-#   mutate(
-#     Deadline = format(Deadline, "%d %b %Y"),
-#     Discipline = if_else(is.na(Discipline), "Any field", Discipline),
-#     Discipline = str_to_sentence(Discipline),
-#     `Career Stage` = if_else(`Career Stage` == "postdoc", "Postdoc", "PhD")
-#   )
-
 data <- vroom::vroom("data/eu-fellowships.csv")
 ```
 
@@ -76,12 +64,13 @@ fellowship_table <- reactable(
   highlight = FALSE,
   striped = FALSE,
   wrap = TRUE,
-  class = "fellowship-table",
+  class = "fellowship-table enhanced-cards",  # Added "enhanced-cards" class
   pagination = TRUE,
   defaultPageSize = 12,
   
   columns = list(
     fellowship_title = colDef(
+      name = "Fellowships",
       cell = render_fellowship_card,
       html = TRUE
     ),
@@ -110,7 +99,7 @@ fellowship_table <- reactable(
   
   rowStyle = list(cursor = "default"),
   theme = reactableTheme(
-    cellPadding = "6px 10px",
+    cellPadding = "0px",  # Removed padding to let cards handle their own spacing
     searchInputStyle = list(width = "100%")
   )
 )
