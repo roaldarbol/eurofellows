@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "EU Fellowship Database"
+  title: "European Fellowship Database"
   favicon: assets/eu-favicon.png
   search: false
   navbar:
@@ -23,7 +23,7 @@ website:
       # - href: https://quarto.org/docs/websites/website-navigation.html
       #   text: Contribute
     right:
-      - href: https://opnform.com/forms/eu-fellowships-bliknk
+      - href: https://opnform.com/forms/european-fellowships-gqocnm
         target: _blank
         text: Submit fellowship
   page-footer:

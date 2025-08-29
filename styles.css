@@ -242,7 +242,7 @@ select {
   margin-left: 16px;
   flex-shrink: 0;
   align-items: flex-end;
-  font-size: 14px;
+  font-size: 16px;
   /* color: #6b7280; */
   color: #374151;
   font-weight: 500;
@@ -256,7 +256,7 @@ select {
 }
 
 .header-detail-item .detail-icon {
-  font-size: 14px;
+  font-size: 16px;
   margin-right: 2px;
 }
 
@@ -301,7 +301,7 @@ select {
 .detail-item {
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .detail-icon {
@@ -310,7 +310,7 @@ select {
 }
 
 .detail-text {
-  font-size: 14px;
+  font-size: 16px;
   color: #374151;
   font-weight: 500;
 }
@@ -318,7 +318,7 @@ select {
 /* Remove separate deadline section since it's now in header */
 
 .deadline-date {
-  font-size: 14px;
+  font-size: 16px;
   align-items: center;
   color: #374151;
   font-weight: 500;
@@ -327,7 +327,7 @@ select {
 .urgency-badge {
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   align-items: center;
 }

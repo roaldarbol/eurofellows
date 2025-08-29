@@ -6,7 +6,7 @@ library(here)
 
 here::i_am("R/add-new-fellowships.R")
 
-new_data <- vroom::vroom(here::here("data", "eu-fellowships-new.csv")) |> 
+new_data <- vroom::vroom(here::here("data", "european-fellowships-new.csv")) |>
   janitor::clean_names()
 
 if (nrow(new_data) != 0){
@@ -30,17 +30,20 @@ if (nrow(new_data) != 0){
     dplyr::mutate(
       career_stage = as.factor(career_stage),
       eligible_host_location = dplyr::if_else(
-        eligible_host_location == "Specific EU countries",
+        eligible_host_location == "Specific European countries",
         eligible_countries,
         eligible_host_location
       ),
       eligible_nationalities = dplyr::if_else(
-        eligible_nationalities_23 == "Specific EU countries", 
+        eligible_nationalities_23 == "Specific European countries", 
         eligible_nationalities_24, 
         eligible_nationalities_23),
       field_category_major = as.factor(field_category_major),
       field_category_minor = as.factor(field_category_minor),
-      application_deadline = lubridate::date(application_deadline),
+      application_deadline = if_else(
+        isTRUE(rolling_application_deadline), 
+        NA, 
+        lubridate::date(application_deadline)),
       date_created = lubridate::date(date_created),
       requires_mobility = dplyr::if_else(
         isTRUE(requires_mobility),
@@ -58,11 +61,13 @@ if (nrow(new_data) != 0){
       minimum_years_post_phd = as.numeric(minimum_years_post_phd),
       maximum_years_in_postdoc = as.numeric(maximum_years_in_postdoc),
       contributor_name = as.character(contributor_name),
-      contributor_url = as.character(contributor_url)) |> 
+      contributor_url = as.character(contributor_url),
+      comments = as.character(comments)) |> 
     dplyr::select(
       -c(eligible_countries,
          limited_to_specific_institution, 
          only_available_within_specific_fields,
+         rolling_application_deadline,
          minimum_years_post_ph_d,
          maximum_years_post_docing,
          eligible_nationalities_23,
@@ -74,4 +79,4 @@ if (nrow(new_data) != 0){
 }
 
 # Update the file
-vroom::vroom_write(new_data, here::here("data", "eu-fellowships.csv"), delim = ";", append = TRUE)
+vroom::vroom_write(new_data, here::here("data", "european-fellowships.csv"), delim = ";", append = TRUE)

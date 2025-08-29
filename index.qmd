@@ -13,6 +13,8 @@ format:
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+      <script async data-nf='{"formurl":"https://opnform.com/forms/european-fellowships-gqocnm","emoji":"📝","position":"right","bgcolor":"#3B82F6","width":800}' src='https://opnform.com/widgets/embed-min.js'></script>
 toc: false
 title-block-banner: "linear-gradient(rgba(0, 51, 153, 1), rgba(230, 238, 255, 0.3)), url('assets/eu.jpg')"
 ---
@@ -34,14 +36,14 @@ library(cli)
 
 # Source filter functions
 source("R/filters.R")
-source("R/card_renderer.R")
+source("R/card-renderer.R")
 
 set.seed(123)
 ```
 
 ```{r load-data}
 #| include: FALSE
-data <- vroom::vroom("data/eu-fellowships.csv") |> 
+data <- vroom::vroom("data/european-fellowships.csv") |> 
   dplyr::arrange(application_deadline)
 ```
 
@@ -95,6 +97,7 @@ fellowship_table <- reactable(
     maximum_years_in_postdoc = colDef(show = FALSE),
     contributor_name = colDef(show = FALSE),
     contributor_url = colDef(show = FALSE),
+    comments = colDef(show = FALSE),
     date_created = colDef(show = FALSE),
     date_updated = colDef(show = FALSE)
   ),
@@ -139,7 +142,7 @@ div(
         shared_data = shared_countries,
         group = "eligible_host_location",
         # custom_order = c("EU"),
-        catchall_input = "Any EU country"
+        catchall_input = "Any European country"
       ),
       multi_select_filter(
         id = "filter_field",

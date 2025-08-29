@@ -85,6 +85,16 @@ format_deadline <- function(deadline_str) {
 create_eligibility_badges <- function(row) {
   badges <- c()
   
+  # Host countries
+  if (!is.na(row$eligible_host_location) && row$eligible_host_location != "") {
+    badges <- c(badges, row$eligible_host_location)
+  }
+  
+  # Academic field requirements
+  if (!is.na(row$eligible_fields) && row$eligible_fields != "") {
+    badges <- c(badges, paste("Limited to", row$eligible_fields))
+  }
+  
   # PhD experience requirements
   if (!is.na(row$minimum_years_post_phd) && row$minimum_years_post_phd != "") {
     badges <- c(badges, paste("Min", row$minimum_years_post_phd, "years post-PhD"))
@@ -113,7 +123,9 @@ create_eligibility_badges <- function(row) {
   
   badge_elements <- lapply(badges, function(badge) {
     # Use different icons for different types of requirements
-    icon <- if (grepl("years", badge)) "⏳" 
+    icon <- if (badge == badges[1]) "📍"
+    else if (grepl("Limited", badge)) "🔬"
+    else if (grepl("years", badge)) "⏳" 
     else if (grepl("Mobility", badge)) "✈️"
     else if (grepl("PhD", badge)) "🎓"
     else if (grepl("Publications", badge)) "📚"
@@ -174,13 +186,13 @@ render_fellowship_card <- function(value, index) {
         class = "card-header-right",
         
         # Location
-        tags$div(
-          class = "header-detail-item",
-          tags$span(class = "detail-icon", "📍"),
-          tags$span(class = "detail-text", 
-                    if(is.na(row$eligible_host_location) || row$eligible_host_location == "") "Location TBD" else row$eligible_host_location
-          )
-        ),
+        # tags$div(
+        #   class = "header-detail-item",
+        #   tags$span(class = "detail-icon", "📍"),
+        #   tags$span(class = "detail-text", 
+        #             if(is.na(row$eligible_host_location) || row$eligible_host_location == "") "Location TBD" else row$eligible_host_location
+        #   )
+        # ),
         
         # Duration
         tags$div(
