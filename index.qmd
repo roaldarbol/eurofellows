@@ -1,9 +1,9 @@
 ---
 title: |
-  Fellowships <span style="font-size: 80% !important;">in the</span> \
-  European Union
+  Fellowships <span style="font-size: 80% !important;">in</span> \
+  Europe
 description-title: |
-  A dashboard for EU fellowship opportunities with filtering and search capabilities.
+  A dashboard for European fellowship opportunities with filtering and search capabilities.
 format: 
   html:
     page-layout: full
@@ -41,7 +41,8 @@ set.seed(123)
 
 ```{r load-data}
 #| include: FALSE
-data <- vroom::vroom("data/eu-fellowships.csv")
+data <- vroom::vroom("data/eu-fellowships.csv") |> 
+  dplyr::arrange(application_deadline)
 ```
 
 ```{r setup-crosstalk}
@@ -94,7 +95,8 @@ fellowship_table <- reactable(
     maximum_years_in_postdoc = colDef(show = FALSE),
     contributor_name = colDef(show = FALSE),
     contributor_url = colDef(show = FALSE),
-    date_created = colDef(show = FALSE)
+    date_created = colDef(show = FALSE),
+    date_updated = colDef(show = FALSE)
   ),
   
   rowStyle = list(cursor = "default"),

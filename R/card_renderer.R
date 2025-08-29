@@ -113,7 +113,7 @@ create_eligibility_badges <- function(row) {
   
   badge_elements <- lapply(badges, function(badge) {
     # Use different icons for different types of requirements
-    icon <- if (grepl("years", badge)) "🏆" 
+    icon <- if (grepl("years", badge)) "⏳" 
     else if (grepl("Mobility", badge)) "✈️"
     else if (grepl("PhD", badge)) "🎓"
     else if (grepl("Publications", badge)) "📚"
@@ -152,85 +152,91 @@ render_fellowship_card <- function(value, index) {
   tags$div(
     class = paste("fellowship-card", urgency_info$urgency_class),
     
-    # Card header with title and funder
+    # Card header with title/funder on left, key details on right
     tags$div(
       class = "card-header",
-      tags$h3(
-        class = "fellowship-title",
-        row$fellowship_title
-      ),
-      tags$p(
-        class = "fellowship-funder",
-        row$fellowship_funder
-      )
-    ),
-    
-    # Key details grid
-    tags$div(
-      class = "card-details-grid",
       
-      # Location
+      # Left side: Title and funder
       tags$div(
-        class = "detail-item",
-        tags$span(class = "detail-icon location-icon", "📍"),
-        tags$span(class = "detail-text", 
-                  if(is.na(row$eligible_host_location) || row$eligible_host_location == "") "Location TBD" else row$eligible_host_location
+        class = "card-header-left",
+        tags$h3(
+          class = "fellowship-title",
+          row$fellowship_title
+        ),
+        tags$p(
+          class = "fellowship-funder",
+          row$fellowship_funder
         )
       ),
       
-      # Duration
+      # Right side: Location, duration, deadline
       tags$div(
-        class = "detail-item",
-        tags$span(class = "detail-icon duration-icon", "⏱️"),
-        tags$span(class = "detail-text", 
-                  if(is.na(row$fellowship_duration)) "Duration TBD" else paste(row$fellowship_duration, "years")
+        class = "card-header-right",
+        
+        # Location
+        tags$div(
+          class = "header-detail-item",
+          tags$span(class = "detail-icon", "📍"),
+          tags$span(class = "detail-text", 
+                    if(is.na(row$eligible_host_location) || row$eligible_host_location == "") "Location TBD" else row$eligible_host_location
+          )
+        ),
+        
+        # Duration
+        tags$div(
+          class = "header-detail-item",
+          tags$span(class = "detail-icon", "⏱️"),
+          tags$span(class = "detail-text", 
+                    if(is.na(row$fellowship_duration)) "Duration TBD" else paste(row$fellowship_duration, "years")
+          )
+        ),
+        
+        # Deadline with urgency
+        tags$div(
+          class = "header-detail-item",
+          tags$span(class = "detail-icon", "📅"),
+          tags$span(class = "detail-text deadline-date", formatted_deadline),
+          if (!is.na(urgency_info$days_left)) {
+            tags$span(
+              class = paste("urgency-badge", urgency_info$urgency_class),
+              urgency_info$urgency_text
+            )
+          }
         )
       )
     ),
     
-    # Deadline with urgency indicator
-    tags$div(
-      class = "deadline-section",
-      tags$span(class = "detail-icon deadline-icon", "📅"),
-      tags$span(class = "deadline-date", formatted_deadline),
-      if (!is.na(urgency_info$days_left)) {
-        tags$span(
-          class = paste("urgency-badge", urgency_info$urgency_class),
-          urgency_info$urgency_text
-        )
-      }
-    ),
-    
-    # Academic fields
-    if (!is.na(row$eligible_fields) && row$eligible_fields != "") {
-      tags$div(
-        class = "fields-section",
-        tags$span(class = "detail-icon fields-icon", "🔬"),
-        tags$span(class = "fields-text", row$eligible_fields)
-      )
-    },
-    
-    # Eligibility criteria as compact badges
+    # All eligibility criteria as compact badges (field + requirements)
     create_eligibility_badges(row),
     
-    # Action button
+    # Action button and attribution on same line
     tags$div(
       class = "card-actions",
-      tags$a(
-        href = row$fellowship_url,
-        target = "_blank",
-        class = "learn-more-btn",
-        "Learn More",
-        tags$span(class = "external-icon", "↗")
-      )
-    ),
-    
-    # Attribution
-    if (!is.na(row$contributor_name) && row$contributor_name != "") {
+      
+      # Left side: Button
       tags$div(
-        class = "card-attribution",
-        paste("Added by", row$contributor_name)
-      )
-    }
+        class = "card-actions-left",
+        tags$a(
+          href = row$fellowship_url,
+          target = "_blank",
+          class = "learn-more-btn",
+          "Learn More",
+          tags$span(class = "external-icon", "↗")
+        )
+      ),
+      
+      # Right side: Attribution
+      if (!is.na(row$date_updated) && is.Date(row$date_updated)) {
+        tags$div(
+          class = "card-actions-right",
+          tags$div(
+            class = "card-last-updated",
+            paste("Last updated:", format(row$date_updated, "%Y-%m-%d"))
+          )
+        )
+      } else {
+        tags$div(class = "card-actions-right") # Empty div to maintain layout
+      }
+    )
   )
 }

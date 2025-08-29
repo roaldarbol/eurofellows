@@ -21,8 +21,7 @@ h1 {
 
 @media screen and (max-width: 640px) {
   h1 {
-    font-size: clamp(4.5rem, 4vw, 6rem);
-    overflow-wrap: anywhere;
+    font-size: 5rem;
   }
 }
 
@@ -221,15 +220,65 @@ select {
   opacity: 0.7;
 }
 
-/* Enhanced card header */
+/* Enhanced card header with top-right details */
 .fellowship-card .card-header {
   margin-bottom: 12px;
-  padding-right: 32px;
-  display: block;
-  justify-content: flex-start;
+  display: flex;
+  justify-content: space-between;
   align-items: flex-start;
   background-color: transparent;
   border-color: transparent !important;
+}
+
+.card-header-left {
+  flex: 1;
+  min-width: 0; /* Allow text to shrink */
+}
+
+.card-header-right {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  margin-left: 16px;
+  flex-shrink: 0;
+  align-items: flex-end;
+  font-size: 14px;
+  /* color: #6b7280; */
+  color: #374151;
+  font-weight: 500;
+}
+
+.header-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.header-detail-item .detail-icon {
+  font-size: 14px;
+  margin-right: 2px;
+}
+
+/* Mobile: stack everything vertically */
+@media (max-width: 768px) {
+  .fellowship-card .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .card-header-right {
+    margin-left: 0;
+    margin-top: 8px;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .header-detail-item {
+    font-size: 13px;
+  }
 }
 
 .fellowship-title {
@@ -247,18 +296,11 @@ select {
   margin: 0;
 }
 
-/* Details grid layout */
-.card-details-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 12px;
-}
+/* Remove the old details grid since we moved location/duration to header */
 
 .detail-item {
   display: flex;
   align-items: center;
-  color: #6b7280;
   font-size: 14px;
 }
 
@@ -269,19 +311,15 @@ select {
 
 .detail-text {
   font-size: 14px;
+  color: #374151;
+  font-weight: 500;
 }
 
-/* Deadline section with urgency indicators */
-.deadline-section {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+/* Remove separate deadline section since it's now in header */
 
 .deadline-date {
   font-size: 14px;
+  align-items: center;
   color: #374151;
   font-weight: 500;
 }
@@ -291,6 +329,7 @@ select {
   border-radius: 12px;
   font-size: 12px;
   font-weight: 500;
+  align-items: center;
 }
 
 .urgency-badge.urgency-critical {
@@ -313,12 +352,7 @@ select {
   color: #6b7280;
 }
 
-/* Fields section */
-.fields-section {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
+/* Remove separate fields section since fields are now badges */
 
 .fields-text {
   font-size: 14px;
@@ -366,9 +400,27 @@ select {
   font-size: 14px;
 }
 
-/* Enhanced action buttons */
+/* Enhanced action buttons and last-updated container */
 .card-actions {
   padding-top: 6px;
+  border-top: 1px solid #f3f4f6;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-actions-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-actions-right {
+  display: flex;
+  flex-direction: row;
+  margin-left: 16px;
+  flex-shrink: 0;
+  align-items: center;
 }
 
 .learn-more-btn {
@@ -382,6 +434,7 @@ select {
   font-weight: 500;
   border-radius: 6px;
   transition: background-color 0.2s ease;
+  flex-shrink: 0;
 }
 
 .learn-more-btn:hover {
@@ -395,13 +448,25 @@ select {
   font-size: 14px;
 }
 
-/* Attribution styling */
-.card-attribution {
+/* last-updated styling - now inline */
+.card-last-updated {
   font-size: 12px;
   color: #9ca3af;
-  margin-top: 10px;
-  padding-top: 6px;
-  border-top: 1px solid #f3f4f6;
+  margin: 0;
+}
+
+/* Mobile responsiveness for actions */
+@media (max-width: 480px) {
+  .card-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .card-actions-right {
+    margin-left: 0;
+    margin-top: 8px;
+    align-items: center;
+  }
 }
 
 /* ===================================================================
