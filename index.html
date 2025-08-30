@@ -58,6 +58,14 @@ ul.task-list li input[type="checkbox"] {
         background: linear-gradient(rgba(0, 51, 153, 1), rgba(230, 238, 255, 0.3)), url('assets/eu.jpg');
       }
 </style>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/selectize-0.12.4/css/selectize.bootstrap3.css" rel="stylesheet">
+<script src="site_libs/selectize-0.12.4/js/selectize.min.js"></script>
+<script src="site_libs/ionrangeslider-javascript-2.3.1/js/ion.rangeSlider.min.js"></script>
+<script src="site_libs/strftime-0.9.2/strftime-min.js"></script>
+<link href="site_libs/ionrangeslider-css-2.3.1/css/ion.rangeSlider.css" rel="stylesheet">
 <script src="site_libs/core-js-2.5.3/shim.min.js"></script>
 <script src="site_libs/react-18.2.0/react.min.js"></script>
 <script src="site_libs/react-18.2.0/react-dom.min.js"></script>
@@ -66,14 +74,13 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
 <script src="site_libs/reactable-binding-0.4.4/reactable.js"></script>
-<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet">
 
 <script async="" data-nf="{&quot;formurl&quot;:&quot;https://opnform.com/forms/european-fellowships-gqocnm&quot;,&quot;emoji&quot;:&quot;📝&quot;,&quot;position&quot;:&quot;right&quot;,&quot;bgcolor&quot;:&quot;#3B82F6&quot;,&quot;width&quot;:800}" src="https://opnform.com/widgets/embed-min.js"></script>
+<script src="site_libs/strftime-0.9.2/strftime-min.js"></script>
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -153,102 +160,309 @@ Europe</p></h1>
 <div class="cell">
 <div class="cell-output-display no-overflow-x">
 <div class="fellowships">
-<div class="filter-box">
-<div class="header-with-radio">
-<h4 class="filter-title anchored">Filter fellowships</h4>
-<div class="filter-input">
-<div class="radio-group">
-<div class="radio-option">
-<input type="radio" id="filter_career_stage_Postdoc" name="filter_career_stage" value="Postdoc" checked="" onchange="window['__ct__filter_career_stage'].filter(this.value)">
-<label for="filter_career_stage_Postdoc">Postdoc</label>
+<div class="filter-box compact-layout">
+<div class="filter-header">
+<div class="filter-title-section">
+<h4 class="filter-title anchored">
+<span class="filter-icon"><svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:#3b82f6;overflow:visible;position:relative;"><path d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"></path></svg></span>
+Filter Fellowships
+</h4>
+</div>
+<div>
+<div class="career-stage-wrapper">
+<div id="career_stage_toggle" class="form-group crosstalk-input-checkboxgroup crosstalk-input">
+<label class="control-label" for="career_stage_toggle"></label>
+<div class="crosstalk-options-group">
+<label class="checkbox-inline">
+<input type="checkbox" name="career_stage_toggle" value="PhD">
+<span>PhD</span>
+</label>
+<label class="checkbox-inline">
+<input type="checkbox" name="career_stage_toggle" value="Postdoc">
+<span>Postdoc</span>
+</label>
+</div>
+<script type="application/json" data-for="career_stage_toggle">{
+  "map": {
+    "PhD": ["6"],
+    "Postdoc": ["1", "2", "3", "4", "5"]
+  },
+  "group": ["SharedData9eceb20d"]
+}</script>
 </div>
 </div>
 <script>
-    window['__ct__filter_career_stage'] = (function() {
-      const handle = new window.crosstalk.FilterHandle('SharedData9eceb20d')
-      const map = {"Postdoc":["1","2","3"]}
-      
-      // Set default filter
-      setTimeout(function() {
-        handle.set(map['Postdoc'] || [])
-      }, 100)
-      
-      return {
-        filter: function(value) {
-          handle.set(map[value] || [])
-        }
-      }
-    })()
-  </script>
-</div>
-</div>
-<div class="filters">
-<div class="filter-input">
-<label for="filter_country">Host countries</label>
-<select id="filter_country" multiple="" size="4" onchange="window['__ct__filter_country'].filter()" style="width: 100%">
-<option value="">Any European country</option>
-<option value="denmark">Denmark</option>
-</select>
-<script>
-    window['__ct__filter_country'] = (function() {
-      const handle = new window.crosstalk.FilterHandle('SharedData9eceb20d')
-      const map = {"any european country":["1"],"denmark":["2","3"]}
-      return {
-        filter: function() {
-          const sel = Array.from(document.getElementById('filter_country').selectedOptions)
-                           .map(o => o.value)
-          if (sel.length === 0 || sel.includes('')) {
-            handle.clear()
-            return
+      document.addEventListener('DOMContentLoaded', function() {
+        
+        function updatePostdocFiltersVisibility() {
+          // Get the checkbox states
+          const phdCheckbox = document.querySelector('input[value="PhD"]');
+          const postdocCheckbox = document.querySelector('input[value="Postdoc"]');
+          const advancedFilters = document.getElementById('postdoc-advanced-filters');
+          
+          if (phdCheckbox && postdocCheckbox && advancedFilters) {
+            // Show postdoc filters only if Postdoc is checked
+            if (postdocCheckbox.checked) {
+              advancedFilters.style.display = 'block';
+              advancedFilters.style.opacity = '1';
+            } else {
+              advancedFilters.style.display = 'none';
+            }
           }
-          const allKeys = sel.reduce((acc, val) => {
-            const ks = map[val] || []
-            ks.forEach(k => { if (!acc.includes(k)) acc.push(k) })
-            return acc
-          }, [])
-          handle.set(allKeys)
         }
-      }
-    })()
-  </script>
-</div>
-<div class="filter-input">
-<label for="filter_field">Academic fields</label>
-<select id="filter_field" multiple="" size="4" onchange="window['__ct__filter_field'].filter()" style="width: 100%">
-<option value="">Any field</option>
-<option value="data science">Data science</option>
-<option value="neuroscience">Neuroscience</option>
-</select>
-<script>
-    window['__ct__filter_field'] = (function() {
-      const handle = new window.crosstalk.FilterHandle('SharedData9eceb20d')
-      const map = {"1":["1"],"neuroscience":["2"],"data science":["3"]}
-      return {
-        filter: function() {
-          const sel = Array.from(document.getElementById('filter_field').selectedOptions)
-                           .map(o => o.value)
-          if (sel.length === 0 || sel.includes('')) {
-            handle.clear()
-            return
+        
+        // Wait for crosstalk to initialize
+        setTimeout(function() {
+          // Find and attach listeners to the checkboxes
+          const phdCheckbox = document.querySelector('input[value="PhD"]');
+          const postdocCheckbox = document.querySelector('input[value="Postdoc"]');
+          
+          if (phdCheckbox && postdocCheckbox) {
+            
+            // Add change listeners
+            phdCheckbox.addEventListener('change', updatePostdocFiltersVisibility);
+            postdocCheckbox.addEventListener('change', updatePostdocFiltersVisibility);
+            
+            // Set initial state - default to Postdoc only
+            phdCheckbox.checked = true;
+            postdocCheckbox.checked = true;
+            
+            // Trigger change events to apply the filter
+            postdocCheckbox.dispatchEvent(new Event('change'));
+            
+            // Update visibility
+            updatePostdocFiltersVisibility();
+            
+            console.log('Career stage filter initialized with Postdoc selected');
           }
-          const allKeys = sel.reduce((acc, val) => {
-            const ks = map[val] || []
-            ks.forEach(k => { if (!acc.includes(k)) acc.push(k) })
-            return acc
-          }, [])
-          handle.set(allKeys)
+        }, 200);
+      });
+    </script>
+</div>
+</div>
+<div class="filters-grid-main">
+<div class="filter-row-primary">
+<div class="filter-group compact">
+<div id="eligible_host_location" class="form-group crosstalk-input-select crosstalk-input">
+<label class="control-label" for="eligible_host_location">
+<label class="filter-label">
+<span class="filter-icon"><svg aria-hidden="true" role="img" viewbox="0 0 384 512" style="height:1em;width:0.75em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"></path></svg></span>
+Countries
+</label>
+</label>
+<div>
+<select multiple=""></select>
+<script type="application/json" data-for="eligible_host_location">{
+  "items": {
+    "value": ["Any European country", "Denmark", "Ireland"],
+    "label": ["Any European country", "Denmark", "Ireland"]
+  },
+  "map": {
+    "Any European country": ["1", "4"],
+    "Denmark": ["3", "5", "6"],
+    "Ireland": ["2"]
+  },
+  "group": ["SharedData9eceb20d"]
+}</script>
+</div>
+</div>
+</div>
+<div class="filter-group deadline-range">
+<div class="form-group crosstalk-input crosstalk-input-slider js-range-slider" id="application_deadline">
+<label class="control-label" for="application_deadline">
+<label class="filter-label">
+<span class="filter-icon"><svg aria-hidden="true" role="img" viewbox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M152 24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H64C28.7 64 0 92.7 0 128v16 48V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V192 144 128c0-35.3-28.7-64-64-64H344V24c0-13.3-10.7-24-24-24s-24 10.7-24 24V64H152V24zM48 192H400V448c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192z"></path></svg></span>
+Application Deadline
+</label>
+</label>
+<input data-skin="shiny" data-type="double" data-min="1757462400000" data-max="1772668800000" data-from="1757462400000" data-to="1772668800000" data-step="86400000" data-grid="false" data-grid-snap="false" data-prettify-separator="," data-keyboard="true" data-keyboard-step="0.568181818181818" data-drag-interval="true" data-round="0" data-data-type="date" data-time-format="%F">
+<script type="application/json" data-for="application_deadline">{
+  "values": ["2025-09-10", "2025-09-29", "2025-11-19", "2026-01-15", "2026-03-05", "2026-03-05"],
+  "keys": ["1", "2", "3", "4", "5", "6"],
+  "group": ["SharedData9eceb20d"]
+}</script>
+</div>
+</div>
+</div>
+<div class="filter-row-primary">
+<div class="filter-group compact">
+<div id="eligible_fields" class="form-group crosstalk-input-select crosstalk-input">
+<label class="control-label" for="eligible_fields">
+<label class="filter-label">
+<span class="filter-icon"><svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M160 32c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32c17.7 0 32 14.3 32 32V288c0 17.7-14.3 32-32 32c0 17.7-14.3 32-32 32H192c-17.7 0-32-14.3-32-32c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32zM32 448H320c70.7 0 128-57.3 128-128s-57.3-128-128-128V128c106 0 192 86 192 192c0 49.2-18.5 94-48.9 128H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H320 32c-17.7 0-32-14.3-32-32s14.3-32 32-32zm80-64H304c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z"></path></svg></span>
+Field
+</label>
+</label>
+<div>
+<select multiple=""></select>
+<script type="application/json" data-for="eligible_fields">{
+  "items": {
+    "value": ["Any field", "Data science", "Neuroscience"],
+    "label": ["Any field", "Data science", "Neuroscience"]
+  },
+  "map": {
+    "Any field": ["1", "2", "4"],
+    "Data science": ["5", "6"],
+    "Neuroscience": ["3"]
+  },
+  "group": ["SharedData9eceb20d"]
+}</script>
+</div>
+</div>
+</div>
+<div class="filter-group compact">
+<div class="form-group crosstalk-input crosstalk-input-slider js-range-slider" id="fellowship_duration">
+<label class="control-label" for="fellowship_duration">
+<label class="filter-label">
+<span class="filter-icon"><svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M464 256A208 208 0 1 1 48 256a208 208 0 1 1 416 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg></span>
+Duration (max)
+</label>
+</label>
+<input data-skin="shiny" data-type="double" data-min="2" data-max="5" data-from="2" data-to="5" data-step="1" data-grid="false" data-grid-snap="false" data-prettify-separator="," data-postfix="y" data-keyboard="true" data-keyboard-step="33.3333333333333" data-drag-interval="true" data-data-type="number">
+<script type="application/json" data-for="fellowship_duration">{
+  "values": [2, 2, 3, 3, 5, 5],
+  "keys": ["1", "5", "3", "6", "2", "4"],
+  "group": ["SharedData9eceb20d"]
+}</script>
+</div>
+</div>
+</div>
+</div>
+<div id="postdoc-advanced-filters" class="advanced-filters-section" style="display: block;">
+<div class="filter-row-postdoc">
+<div class="filter-group compact">
+<div id="requires_mobility" class="form-group crosstalk-input-select crosstalk-input">
+<label class="control-label" for="requires_mobility">
+<label class="req-label">
+<svg aria-hidden="true" role="img" viewbox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M381 114.9L186.1 41.8c-16.7-6.2-35.2-5.3-51.1 2.7L89.1 67.4C78 73 77.2 88.5 87.6 95.2l146.9 94.5L136 240 77.8 214.1c-8.7-3.9-18.8-3.7-27.3 .6L18.3 230.8c-9.3 4.7-11.8 16.8-5 24.7l73.1 85.3c6.1 7.1 15 11.2 24.3 11.2H248.4c5 0 9.9-1.2 14.3-3.4L535.6 212.2c46.5-23.3 82.5-63.3 100.8-112C645.9 75 627.2 48 600.2 48H542.8c-20.2 0-40.2 4.8-58.2 14L381 114.9zM0 480c0 17.7 14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32c-17.7 0-32 14.3-32 32z"></path></svg>
+Mobility
+</label>
+</label>
+<div>
+<select></select>
+<script type="application/json" data-for="requires_mobility">{
+  "items": {
+    "value": ["False", "True"],
+    "label": ["False", "True"]
+  },
+  "map": {
+    "False": ["2", "3", "4", "5", "6"],
+    "True": ["1"]
+  },
+  "group": ["SharedData9eceb20d"]
+}</script>
+</div>
+</div>
+</div>
+<div class="filter-group compact">
+<div id="requires_phd" class="form-group crosstalk-input-select crosstalk-input">
+<label class="control-label" for="requires_phd">
+<label class="req-label">
+<svg aria-hidden="true" role="img" viewbox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"></path></svg>
+PhD
+</label>
+</label>
+<div>
+<select></select>
+<script type="application/json" data-for="requires_phd">{
+  "items": {
+    "value": ["False"],
+    "label": ["False"]
+  },
+  "map": {
+    "False": ["1", "2", "3", "4", "5", "6"]
+  },
+  "group": ["SharedData9eceb20d"]
+}</script>
+</div>
+</div>
+</div>
+<div class="filter-group compact">
+<div id="requires_publication" class="form-group crosstalk-input-select crosstalk-input">
+<label class="control-label" for="requires_publication">
+<label class="req-label">
+<svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"></path></svg>
+Publication
+</label>
+</label>
+<div>
+<select></select>
+<script type="application/json" data-for="requires_publication">{
+  "items": {
+    "value": ["False"],
+    "label": ["False"]
+  },
+  "map": {
+    "False": ["1", "2", "3", "4", "5", "6"]
+  },
+  "group": ["SharedData9eceb20d"]
+}</script>
+</div>
+</div>
+</div>
+<div></div>
+<div class="filter-toggles">
+<label class="toggle-checkbox">
+<input type="checkbox" id="toggle-min-years">
+<span class="toggle-text">Min years</span>
+</label>
+<label class="toggle-checkbox">
+<input type="checkbox" id="toggle-max-years">
+<span class="toggle-text">Max years</span>
+</label>
+</div>
+</div>
+<div class="experience-sliders">
+<div id="max-years-filter" class="slider-container">
+<div class="form-group crosstalk-input crosstalk-input-slider js-range-slider" id="maximum_years_post_phd">
+<label class="control-label" for="maximum_years_post_phd">Maximum years post-PhD</label>
+<input data-skin="shiny" data-type="double" data-min="3" data-max="8" data-from="3" data-to="8" data-step="1" data-grid="false" data-grid-snap="false" data-prettify-separator="," data-postfix="y" data-keyboard="true" data-keyboard-step="20" data-drag-interval="true" data-data-type="number">
+<script type="application/json" data-for="maximum_years_post_phd">{
+  "values": [3, 5, 5, 6, 8, "NA"],
+  "keys": ["2", "3", "4", "5", "1", "6"],
+  "group": ["SharedData9eceb20d"]
+}</script>
+</div>
+</div>
+</div>
+</div>
+<script>
+      document.addEventListener('DOMContentLoaded', function() {
+        function bindSliderToggle(checkboxId, sliderId) {
+          const checkbox = document.getElementById(checkboxId);
+          const sliderDiv = document.getElementById(sliderId);
+          
+          if (checkbox && sliderDiv) {
+            function updateSliderVisibility() {
+              sliderDiv.style.display = checkbox.checked ? 'block' : 'none';
+            }
+            
+            checkbox.addEventListener('change', updateSliderVisibility);
+            updateSliderVisibility(); // Initial state
+          }
         }
-      }
-    })()
-  </script>
-</div>
-</div>
+        
+        bindSliderToggle('toggle-min-years', 'min-years-filter');
+        bindSliderToggle('toggle-max-years', 'max-years-filter');
+      });
+    </script>
 </div>
 <hr>
-<div class="reactable html-widget html-fill-item" id="htmlwidget-c2a931752ae4f30d7598" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-c2a931752ae4f30d7598">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"id":["r9MNw","B6R7x","yXJOV"],"career_stage":["Postdoc","Postdoc","Postdoc"],"fellowship_funder":["Marie Skłodowska-Curie Actions (MSCA)","Lundbeck Foundation","Danish Data Science Academy"],"fellowship_title":["Postdoctoral Fellowship","LF Postdoc","DDSA Postdoc Fellowship"],"fellowship_url":["https://marie-sklodowska-curie-actions.ec.europa.eu/calls/msca-postdoctoral-fellowships-2025","https://lundbeckfonden.com/apply-grants/lf-postdocs","https://ddsa.dk/postdocfellowshipcall2025/"],"fellowship_duration":[2,3,2],"application_deadline":["2025-09-10","2025-11-19","2026-03-05"],"eligible_host_location":["Any European country","Denmark","Denmark"],"eligible_institution":[null,null,null],"eligible_nationalities":["Any country worldwide","Any country worldwide","Any country worldwide"],"eligible_fields":[null,"Neuroscience","Data science"],"field_category_major":[null,"Natural sciences, Medical and health sciences","Engineering and technology, Natural sciences, Medical and health sciences"],"field_category_minor":[null,"Natural sciences: Biological sciences, Medical and health sciences: Health sciences, Medical and health sciences: Other medical sciences","Natural sciences: Computer and information sciences"],"requires_mobility":[false,false,false],"requires_phd":[false,false,false],"requires_publication":[false,false,false],"minimum_years_post_phd":[null,null,null],"maximum_years_in_postdoc":[8,5,6],"comments":[null,null,null],"contributor_name":["Mikkel Roald-Arbøl","Mikkel Roald-Arbøl","Mikkel Roald-Arbøl"],"contributor_url":["https://roald-arboel.com","https://roald-arboel.com","https://roald-arboel.com"],"date_created":["2025-08-28","2025-08-28","2025-08-28"],"date_updated":["2025-08-28","2025-08-28","2025-08-28"]},"columns":[{"id":"id","name":"id","type":"character","show":false},{"id":"career_stage","name":"career_stage","type":"character","show":false},{"id":"fellowship_funder","name":"fellowship_funder","type":"character","show":false},{"id":"fellowship_title","name":"Fellowships","type":"character","cell":[{"name":"div","attribs":{"className":"fellowship-card urgency-critical"},"children":[{"name":"div","attribs":{"className":"card-header"},"children":[{"name":"div","attribs":{"className":"card-header-left"},"children":[{"name":"h3","attribs":{"className":"fellowship-title"},"children":["Postdoctoral Fellowship"]},{"name":"p","attribs":{"className":"fellowship-funder"},"children":["Marie Skłodowska-Curie Actions (MSCA)"]}]},{"name":"div","attribs":{"className":"card-header-right"},"children":[{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏱️"]},{"name":"span","attribs":{"className":"detail-text"},"children":["2 years"]}]},{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📅"]},{"name":"span","attribs":{"className":"detail-text deadline-date"},"children":["Sep 10, 2025"]},{"name":"span","attribs":{"className":"urgency-badge urgency-critical"},"children":["12 days left"]}]}]}]},{"name":"div","attribs":{"className":"special-notes"},"children":[{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📍"]},"Any European country"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏳"]},"Max 8 years post-PhD"]}]},{"name":"div","attribs":{"className":"card-actions"},"children":[{"name":"div","attribs":{"className":"card-actions-left"},"children":[{"name":"a","attribs":{"href":"https://marie-sklodowska-curie-actions.ec.europa.eu/calls/msca-postdoctoral-fellowships-2025","target":"_blank","className":"learn-more-btn"},"children":["Learn More",{"name":"span","attribs":{"className":"external-icon"},"children":["↗"]}]}]},{"name":"div","attribs":{"className":"card-actions-right"},"children":[{"name":"div","attribs":{"className":"card-last-updated"},"children":["Last updated: 2025-08-28"]}]}]}]},{"name":"div","attribs":{"className":"fellowship-card urgency-warning"},"children":[{"name":"div","attribs":{"className":"card-header"},"children":[{"name":"div","attribs":{"className":"card-header-left"},"children":[{"name":"h3","attribs":{"className":"fellowship-title"},"children":["LF Postdoc"]},{"name":"p","attribs":{"className":"fellowship-funder"},"children":["Lundbeck Foundation"]}]},{"name":"div","attribs":{"className":"card-header-right"},"children":[{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏱️"]},{"name":"span","attribs":{"className":"detail-text"},"children":["3 years"]}]},{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📅"]},{"name":"span","attribs":{"className":"detail-text deadline-date"},"children":["Nov 19, 2025"]},{"name":"span","attribs":{"className":"urgency-badge urgency-warning"},"children":["12 weeks left"]}]}]}]},{"name":"div","attribs":{"className":"special-notes"},"children":[{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📍"]},"Denmark"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["🔬"]},"Limited to Neuroscience"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏳"]},"Max 5 years post-PhD"]}]},{"name":"div","attribs":{"className":"card-actions"},"children":[{"name":"div","attribs":{"className":"card-actions-left"},"children":[{"name":"a","attribs":{"href":"https://lundbeckfonden.com/apply-grants/lf-postdocs","target":"_blank","className":"learn-more-btn"},"children":["Learn More",{"name":"span","attribs":{"className":"external-icon"},"children":["↗"]}]}]},{"name":"div","attribs":{"className":"card-actions-right"},"children":[{"name":"div","attribs":{"className":"card-last-updated"},"children":["Last updated: 2025-08-28"]}]}]}]},{"name":"div","attribs":{"className":"fellowship-card urgency-normal"},"children":[{"name":"div","attribs":{"className":"card-header"},"children":[{"name":"div","attribs":{"className":"card-header-left"},"children":[{"name":"h3","attribs":{"className":"fellowship-title"},"children":["DDSA Postdoc Fellowship"]},{"name":"p","attribs":{"className":"fellowship-funder"},"children":["Danish Data Science Academy"]}]},{"name":"div","attribs":{"className":"card-header-right"},"children":[{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏱️"]},{"name":"span","attribs":{"className":"detail-text"},"children":["2 years"]}]},{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📅"]},{"name":"span","attribs":{"className":"detail-text deadline-date"},"children":["Mar 05, 2026"]},{"name":"span","attribs":{"className":"urgency-badge urgency-normal"},"children":["7 months left"]}]}]}]},{"name":"div","attribs":{"className":"special-notes"},"children":[{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📍"]},"Denmark"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["🔬"]},"Limited to Data science"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏳"]},"Max 6 years post-PhD"]}]},{"name":"div","attribs":{"className":"card-actions"},"children":[{"name":"div","attribs":{"className":"card-actions-left"},"children":[{"name":"a","attribs":{"href":"https://ddsa.dk/postdocfellowshipcall2025/","target":"_blank","className":"learn-more-btn"},"children":["Learn More",{"name":"span","attribs":{"className":"external-icon"},"children":["↗"]}]}]},{"name":"div","attribs":{"className":"card-actions-right"},"children":[{"name":"div","attribs":{"className":"card-last-updated"},"children":["Last updated: 2025-08-28"]}]}]}]}],"html":true},{"id":"fellowship_url","name":"fellowship_url","type":"character","show":false},{"id":"fellowship_duration","name":"fellowship_duration","type":"numeric","show":false},{"id":"application_deadline","name":"application_deadline","type":"Date","show":false},{"id":"eligible_host_location","name":"eligible_host_location","type":"character","show":false},{"id":"eligible_institution","name":"eligible_institution","type":"logical","show":false},{"id":"eligible_nationalities","name":"eligible_nationalities","type":"character","show":false},{"id":"eligible_fields","name":"eligible_fields","type":"character","show":false},{"id":"field_category_major","name":"field_category_major","type":"character","show":false},{"id":"field_category_minor","name":"field_category_minor","type":"character","show":false},{"id":"requires_mobility","name":"requires_mobility","type":"logical","show":false},{"id":"requires_phd","name":"requires_phd","type":"logical","show":false},{"id":"requires_publication","name":"requires_publication","type":"logical","show":false},{"id":"minimum_years_post_phd","name":"minimum_years_post_phd","type":"logical","show":false},{"id":"maximum_years_in_postdoc","name":"maximum_years_in_postdoc","type":"numeric","show":false},{"id":"comments","name":"comments","type":"logical","show":false},{"id":"contributor_name","name":"contributor_name","type":"character","show":false},{"id":"contributor_url","name":"contributor_url","type":"character","show":false},{"id":"date_created","name":"date_created","type":"Date","show":false},{"id":"date_updated","name":"date_updated","type":"Date","show":false}],"defaultPageSize":12,"className":"fellowship-table enhanced-cards","rowStyle":{"cursor":"default"},"theme":{"cellPadding":"0px","searchInputStyle":{"width":"100%"}},"crosstalkKey":["1","2","3"],"crosstalkGroup":"SharedData9eceb20d","dataKey":"7cdabec4bf4624da1472da7450c0dbb9"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item" id="fellowship_table" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="fellowship_table">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"id":["r9MNw","Z0pY2","B6R7x","N0pjp","yXJOV","Q7vmL"],"career_stage":["Postdoc","Postdoc","Postdoc","Postdoc","Postdoc","PhD"],"fellowship_funder":["Marie Skłodowska-Curie Actions (MSCA)","Welcome Trust","Lundbeck Foundation","The Branco Weiss Fellowship – Society in Science","Danish Data Science Academy","Danish Data Science Academy (DDSA)"],"fellowship_title":["Postdoctoral Fellowship","Welcome Early-Career Awards","LF Postdoc","Branco Weiss Fellowship","DDSA Postdoc Fellowship","DDSA PhD Fellowship"],"fellowship_url":["https://marie-sklodowska-curie-actions.ec.europa.eu/calls/msca-postdoctoral-fellowships-2025","https://wellcome.org/research-funding/schemes/wellcome-early-career-awards#key-dates-d66b","https://lundbeckfonden.com/apply-grants/lf-postdocs","https://brancoweissfellowship.org/who-should-apply/","https://ddsa.dk/postdocfellowshipcall2025/","https://ddsa.dk/phdfellowshipcall2025/"],"fellowship_duration":[2,5,3,5,2,3],"application_deadline":["2025-09-10","2025-09-29","2025-11-19","2026-01-15","2026-03-05","2026-03-05"],"eligible_host_location":["Any European country","Ireland","Denmark","Any European country","Denmark","Denmark"],"eligible_institution":[null,null,null,null,null,null],"eligible_nationalities":["Any country worldwide","Any country worldwide","Any country worldwide","Any country worldwide","Any country worldwide","Any country worldwide"],"eligible_fields":["Any field","Any field","Neuroscience","Any field","Data science","Data science"],"field_category_major":[null,null,"Natural sciences, Medical and health sciences",null,"Engineering and technology, Natural sciences, Medical and health sciences","Natural sciences, Medical and health sciences"],"field_category_minor":[null,null,"Natural sciences: Biological sciences, Medical and health sciences: Health sciences, Medical and health sciences: Other medical sciences",null,"Natural sciences: Computer and information sciences","Natural sciences: Computer and information sciences, Natural sciences: Biological sciences, Natural sciences: Other natural sciences"],"requires_mobility":[true,false,false,false,false,false],"requires_phd":[false,false,false,false,false,false],"requires_publication":[false,false,false,false,false,false],"minimum_years_post_phd":[null,null,null,null,null,null],"maximum_years_post_phd":[8,3,5,5,6,"NA"],"comments":[null,null,null,"The fellowship requires that the project departs from the mainstream of research in your discipline.",null,null],"contributor_name":["Mikkel Roald-Arbøl","Patricia Rubisch","Mikkel Roald-Arbøl","Mikkel Roald-Arbøl","Mikkel Roald-Arbøl","Mikkel Roald-Arbøl"],"contributor_url":["https://roald-arboel.com","https://prubisch.github.io/","https://roald-arboel.com","https://roald-arboel.com","https://roald-arboel.com","https://roald-arboel.com"],"date_created":["2025-08-28","2025-08-29","2025-08-28","2025-08-29","2025-08-28","2025-08-29"],"date_updated":["2025-08-28","2025-08-29","2025-08-28","2025-08-29","2025-08-28","2025-08-29"]},"columns":[{"id":"id","name":"id","type":"character","show":false},{"id":"career_stage","name":"career_stage","type":"character","show":false},{"id":"fellowship_funder","name":"fellowship_funder","type":"character","show":false},{"id":"fellowship_title","name":"Fellowships","type":"character","cell":[{"name":"div","attribs":{"className":"fellowship-card urgency-critical"},"children":[{"name":"div","attribs":{"className":"card-header"},"children":[{"name":"div","attribs":{"className":"card-header-left"},"children":[{"name":"h3","attribs":{"className":"fellowship-title"},"children":["Postdoctoral Fellowship"]},{"name":"p","attribs":{"className":"fellowship-funder"},"children":["Marie Skłodowska-Curie Actions (MSCA)"]}]},{"name":"div","attribs":{"className":"card-header-right"},"children":[{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏱️"]},{"name":"span","attribs":{"className":"detail-text"},"children":["2 years"]}]},{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📅"]},{"name":"span","attribs":{"className":"detail-text deadline-date"},"children":["Sep 10, 2025"]},{"name":"span","attribs":{"className":"urgency-badge urgency-critical"},"children":["11 days left"]}]}]}]},{"name":"div","attribs":{"className":"special-notes"},"children":[{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📍"]},"Any European country"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏳"]},"Max 8 years post-PhD"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["✈️"]},"Mobility required"]}]},{"name":"div","attribs":{"className":"card-actions"},"children":[{"name":"div","attribs":{"className":"card-actions-left"},"children":[{"name":"a","attribs":{"href":"https://marie-sklodowska-curie-actions.ec.europa.eu/calls/msca-postdoctoral-fellowships-2025","target":"_blank","className":"learn-more-btn"},"children":["Learn More",{"name":"span","attribs":{"className":"external-icon"},"children":["↗"]}]}]},{"name":"div","attribs":{"className":"card-actions-right"},"children":[{"name":"div","attribs":{"className":"card-last-updated"},"children":["Last updated: 2025-08-28"]}]}]}]},{"name":"div","attribs":{"className":"fellowship-card urgency-warning"},"children":[{"name":"div","attribs":{"className":"card-header"},"children":[{"name":"div","attribs":{"className":"card-header-left"},"children":[{"name":"h3","attribs":{"className":"fellowship-title"},"children":["Welcome Early-Career Awards"]},{"name":"p","attribs":{"className":"fellowship-funder"},"children":["Welcome Trust"]}]},{"name":"div","attribs":{"className":"card-header-right"},"children":[{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏱️"]},{"name":"span","attribs":{"className":"detail-text"},"children":["5 years"]}]},{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📅"]},{"name":"span","attribs":{"className":"detail-text deadline-date"},"children":["Sep 29, 2025"]},{"name":"span","attribs":{"className":"urgency-badge urgency-warning"},"children":["5 weeks left"]}]}]}]},{"name":"div","attribs":{"className":"special-notes"},"children":[{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📍"]},"Ireland"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏳"]},"Max 3 years post-PhD"]}]},{"name":"div","attribs":{"className":"card-actions"},"children":[{"name":"div","attribs":{"className":"card-actions-left"},"children":[{"name":"a","attribs":{"href":"https://wellcome.org/research-funding/schemes/wellcome-early-career-awards#key-dates-d66b","target":"_blank","className":"learn-more-btn"},"children":["Learn More",{"name":"span","attribs":{"className":"external-icon"},"children":["↗"]}]}]},{"name":"div","attribs":{"className":"card-actions-right"},"children":[{"name":"div","attribs":{"className":"card-last-updated"},"children":["Last updated: 2025-08-29"]}]}]}]},{"name":"div","attribs":{"className":"fellowship-card urgency-warning"},"children":[{"name":"div","attribs":{"className":"card-header"},"children":[{"name":"div","attribs":{"className":"card-header-left"},"children":[{"name":"h3","attribs":{"className":"fellowship-title"},"children":["LF Postdoc"]},{"name":"p","attribs":{"className":"fellowship-funder"},"children":["Lundbeck Foundation"]}]},{"name":"div","attribs":{"className":"card-header-right"},"children":[{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏱️"]},{"name":"span","attribs":{"className":"detail-text"},"children":["3 years"]}]},{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📅"]},{"name":"span","attribs":{"className":"detail-text deadline-date"},"children":["Nov 19, 2025"]},{"name":"span","attribs":{"className":"urgency-badge urgency-warning"},"children":["12 weeks left"]}]}]}]},{"name":"div","attribs":{"className":"special-notes"},"children":[{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📍"]},"Denmark"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["🔬"]},"Limited to Neuroscience"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏳"]},"Max 5 years post-PhD"]}]},{"name":"div","attribs":{"className":"card-actions"},"children":[{"name":"div","attribs":{"className":"card-actions-left"},"children":[{"name":"a","attribs":{"href":"https://lundbeckfonden.com/apply-grants/lf-postdocs","target":"_blank","className":"learn-more-btn"},"children":["Learn More",{"name":"span","attribs":{"className":"external-icon"},"children":["↗"]}]}]},{"name":"div","attribs":{"className":"card-actions-right"},"children":[{"name":"div","attribs":{"className":"card-last-updated"},"children":["Last updated: 2025-08-28"]}]}]}]},{"name":"div","attribs":{"className":"fellowship-card urgency-normal"},"children":[{"name":"div","attribs":{"className":"card-header"},"children":[{"name":"div","attribs":{"className":"card-header-left"},"children":[{"name":"h3","attribs":{"className":"fellowship-title"},"children":["Branco Weiss Fellowship"]},{"name":"p","attribs":{"className":"fellowship-funder"},"children":["The Branco Weiss Fellowship – Society in Science"]}]},{"name":"div","attribs":{"className":"card-header-right"},"children":[{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏱️"]},{"name":"span","attribs":{"className":"detail-text"},"children":["5 years"]}]},{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📅"]},{"name":"span","attribs":{"className":"detail-text deadline-date"},"children":["Jan 15, 2026"]},{"name":"span","attribs":{"className":"urgency-badge urgency-normal"},"children":["5 months left"]}]}]}]},{"name":"div","attribs":{"className":"special-notes"},"children":[{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📍"]},"Any European country"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏳"]},"Max 5 years post-PhD"]}]},{"name":"div","attribs":{"className":"card-actions"},"children":[{"name":"div","attribs":{"className":"card-actions-left"},"children":[{"name":"a","attribs":{"href":"https://brancoweissfellowship.org/who-should-apply/","target":"_blank","className":"learn-more-btn"},"children":["Learn More",{"name":"span","attribs":{"className":"external-icon"},"children":["↗"]}]}]},{"name":"div","attribs":{"className":"card-actions-right"},"children":[{"name":"div","attribs":{"className":"card-last-updated"},"children":["Last updated: 2025-08-29"]}]}]}]},{"name":"div","attribs":{"className":"fellowship-card urgency-normal"},"children":[{"name":"div","attribs":{"className":"card-header"},"children":[{"name":"div","attribs":{"className":"card-header-left"},"children":[{"name":"h3","attribs":{"className":"fellowship-title"},"children":["DDSA Postdoc Fellowship"]},{"name":"p","attribs":{"className":"fellowship-funder"},"children":["Danish Data Science Academy"]}]},{"name":"div","attribs":{"className":"card-header-right"},"children":[{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏱️"]},{"name":"span","attribs":{"className":"detail-text"},"children":["2 years"]}]},{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📅"]},{"name":"span","attribs":{"className":"detail-text deadline-date"},"children":["Mar 05, 2026"]},{"name":"span","attribs":{"className":"urgency-badge urgency-normal"},"children":["7 months left"]}]}]}]},{"name":"div","attribs":{"className":"special-notes"},"children":[{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📍"]},"Denmark"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["🔬"]},"Limited to Data science"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏳"]},"Max 6 years post-PhD"]}]},{"name":"div","attribs":{"className":"card-actions"},"children":[{"name":"div","attribs":{"className":"card-actions-left"},"children":[{"name":"a","attribs":{"href":"https://ddsa.dk/postdocfellowshipcall2025/","target":"_blank","className":"learn-more-btn"},"children":["Learn More",{"name":"span","attribs":{"className":"external-icon"},"children":["↗"]}]}]},{"name":"div","attribs":{"className":"card-actions-right"},"children":[{"name":"div","attribs":{"className":"card-last-updated"},"children":["Last updated: 2025-08-28"]}]}]}]},{"name":"div","attribs":{"className":"fellowship-card urgency-normal"},"children":[{"name":"div","attribs":{"className":"card-header"},"children":[{"name":"div","attribs":{"className":"card-header-left"},"children":[{"name":"h3","attribs":{"className":"fellowship-title"},"children":["DDSA PhD Fellowship"]},{"name":"p","attribs":{"className":"fellowship-funder"},"children":["Danish Data Science Academy (DDSA)"]}]},{"name":"div","attribs":{"className":"card-header-right"},"children":[{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["⏱️"]},{"name":"span","attribs":{"className":"detail-text"},"children":["3 years"]}]},{"name":"div","attribs":{"className":"header-detail-item"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📅"]},{"name":"span","attribs":{"className":"detail-text deadline-date"},"children":["Mar 05, 2026"]},{"name":"span","attribs":{"className":"urgency-badge urgency-normal"},"children":["7 months left"]}]}]}]},{"name":"div","attribs":{"className":"special-notes"},"children":[{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["📍"]},"Denmark"]},{"name":"div","attribs":{"className":"special-note"},"children":[{"name":"span","attribs":{"className":"detail-icon"},"children":["🔬"]},"Limited to Data science"]}]},{"name":"div","attribs":{"className":"card-actions"},"children":[{"name":"div","attribs":{"className":"card-actions-left"},"children":[{"name":"a","attribs":{"href":"https://ddsa.dk/phdfellowshipcall2025/","target":"_blank","className":"learn-more-btn"},"children":["Learn More",{"name":"span","attribs":{"className":"external-icon"},"children":["↗"]}]}]},{"name":"div","attribs":{"className":"card-actions-right"},"children":[{"name":"div","attribs":{"className":"card-last-updated"},"children":["Last updated: 2025-08-29"]}]}]}]}],"html":true},{"id":"fellowship_url","name":"fellowship_url","type":"character","show":false},{"id":"fellowship_duration","name":"fellowship_duration","type":"numeric","show":false},{"id":"application_deadline","name":"application_deadline","type":"Date","show":false},{"id":"eligible_host_location","name":"eligible_host_location","type":"character","show":false},{"id":"eligible_institution","name":"eligible_institution","type":"logical","show":false},{"id":"eligible_nationalities","name":"eligible_nationalities","type":"character","show":false},{"id":"eligible_fields","name":"eligible_fields","type":"character","show":false},{"id":"field_category_major","name":"field_category_major","type":"character","show":false},{"id":"field_category_minor","name":"field_category_minor","type":"character","show":false},{"id":"requires_mobility","name":"requires_mobility","type":"logical","show":false},{"id":"requires_phd","name":"requires_phd","type":"logical","show":false},{"id":"requires_publication","name":"requires_publication","type":"logical","show":false},{"id":"minimum_years_post_phd","name":"minimum_years_post_phd","type":"logical","show":false},{"id":"maximum_years_post_phd","name":"maximum_years_post_phd","type":"numeric","show":false},{"id":"comments","name":"comments","type":"character","show":false},{"id":"contributor_name","name":"contributor_name","type":"character","show":false},{"id":"contributor_url","name":"contributor_url","type":"character","show":false},{"id":"date_created","name":"date_created","type":"Date","show":false},{"id":"date_updated","name":"date_updated","type":"Date","show":false}],"defaultPageSize":12,"className":"fellowship-table enhanced-cards","rowStyle":{"cursor":"default"},"theme":{"cellPadding":"0px","searchInputStyle":{"width":"100%"}},"crosstalkKey":["1","2","3","4","5","6"],"crosstalkGroup":"SharedData9eceb20d","elementId":"fellowship_table","dataKey":"e21060c0053cbbf18a9c44f4b5fcef20"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
+</div>
+<div class="cell">
+<script>
+function filter_default() {
+    document.getElementById("career_stage").getElementsByClassName("selectized")
+    [0].selectize.setValue("Postdoc", true);
+    document.getElementById("career_stage").getElementsByClassName("selectized")
+    [0].selectize.setValue("PhD", true);
+ }
+window.onload = filter_default;
+</script>
 </div>
 
 
@@ -326,7 +540,7 @@ Europe</p></h1>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/roaldarbol\.github\.io\/eu-fellowships\/");
+        var filterRegex = new RegExp("https:\/\/roaldarbol\.github\.io\/european-fellowships\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

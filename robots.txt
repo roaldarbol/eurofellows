@@ -1,1 +1,1 @@
-Sitemap: https://roaldarbol.github.io/eu-fellowships/sitemap.xml
+Sitemap: https://roaldarbol.github.io/european-fellowships/sitemap.xml
