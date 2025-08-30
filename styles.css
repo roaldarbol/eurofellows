@@ -623,3 +623,371 @@ details > p {
 :root {
   --bs-card-border-color: transparent;
 }
+
+/* ===================================================================
+   COMPACT FILTER LAYOUT STYLES
+   =================================================================== */
+
+/* Main filter container with reduced padding */
+.filter-box.compact-layout {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Enhanced header with better alignment */
+.filter-header {
+  display: grid;
+  grid-template-columns: 1fr 0.25fr;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.filter-title-section .filter-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-icon {
+  font-size: 1.2rem;
+}
+
+/* Career stage toggle buttons */
+.career-stage-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.section-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b7280;
+  margin: 0;
+}
+
+.career-stage-toggle .toggle-buttons {
+  display: flex;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.career-stage-toggle input[type="radio"] {
+  display: none;
+}
+
+.career-stage-toggle .toggle-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b7280;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  min-width: 70px;
+  text-align: center;
+}
+
+.career-stage-toggle input[type="radio"]:checked + .toggle-btn {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Main filters grid - compact 2-row layout */
+.filters-grid-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filter-row-primary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  column-gap: 40px;
+  padding-right: 20px;
+}
+
+.filter-row-secondary {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.filter-row-postdoc {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 4px;
+}
+
+/* Individual filter groups - REDUCED SPACING */
+.filter-group.compact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 0px;
+}
+
+.filter-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.label-icon {
+  font-size: 0.9rem;
+}
+
+/* Deadline range styling - REDUCED SPACING */
+.filter-group.deadline-range {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Compact requirements section */
+.requirements-compact {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.req-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.req-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+  margin: 0;
+}
+
+/* Advanced filters section */
+.advanced-filters-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.advanced-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.advanced-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.filter-toggles {
+  display: flex;
+  gap: 16px;
+}
+
+.toggle-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.toggle-checkbox input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Experience sliders */
+.experience-sliders {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.slider-container {
+  transition: opacity 0.3s ease;
+}
+
+/* Override crosstalk filter styles for compact appearance */
+.filter-box.compact-layout .form-group {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.filter-box.compact-layout .crosstalk-input-select,
+.filter-box.compact-layout .crosstalk-input,
+.filter-box.compact-layout .crosstalk-input-bound {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.filter-box.compact-layout .form-group.crosstalk-input-select.crosstalk-input.crosstalk-input-bound {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Target the select elements and their containers more specifically */
+.filter-box.compact-layout select.form-control {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Target slider-specific spacing issues */
+.filter-box.compact-layout .irs-container {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.filter-box.compact-layout .irs {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Ensure filter groups align to top of their containers */
+.filter-group.compact,
+.filter-group.deadline-range {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-self: start; /* Force alignment to top */
+}
+
+.filter-box.compact-layout .form-control {
+  font-size: 0.9rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: white;
+}
+
+.filter-box.compact-layout .form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filter-box.compact-layout select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  padding-right: 32px;
+}
+
+/* Slider styling improvements */
+.filter-box.compact-layout .irs {
+  font-size: 0.8rem;
+}
+
+.filter-box.compact-layout .irs-grid-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.filter-box.compact-layout .irs-min,
+.filter-box.compact-layout .irs-max {
+  font-size: 0.75rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1024px) {
+  .filter-row-primary {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .filter-row-secondary {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .requirements-compact {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    text-align: left;
+  }
+  
+  .career-stage-section {
+    align-items: flex-start;
+  }
+  
+  .filter-row-primary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .requirements-compact {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .experience-sliders {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .filter-box.compact-layout {
+    padding: 16px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-toggles {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .advanced-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+

@@ -91,7 +91,7 @@ create_eligibility_badges <- function(row) {
   }
   
   # Academic field requirements
-  if (!is.na(row$eligible_fields) && row$eligible_fields != "") {
+  if (!is.na(row$eligible_fields) && row$eligible_fields != "" && row$eligible_fields != "Any field") {
     badges <- c(badges, paste("Limited to", row$eligible_fields))
   }
   
@@ -100,8 +100,8 @@ create_eligibility_badges <- function(row) {
     badges <- c(badges, paste("Min", row$minimum_years_post_phd, "years post-PhD"))
   }
   
-  if (!is.na(row$maximum_years_in_postdoc) && row$maximum_years_in_postdoc != "") {
-    badges <- c(badges, paste("Max", row$maximum_years_in_postdoc, "years post-PhD"))
+  if (!is.na(row$maximum_years_post_phd) && row$maximum_years_post_phd != "") {
+    badges <- c(badges, paste("Max", row$maximum_years_post_phd, "years post-PhD"))
   }
   
   # Mobility requirements

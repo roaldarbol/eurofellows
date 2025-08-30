@@ -23,7 +23,7 @@ if (nrow(new_data) != 0){
            requires_phd = ph_d_certificate_required,
            requires_publication = publication_required,
            minimum_years_post_phd = minimum_years_post_ph_d_2,
-           maximum_years_in_postdoc = maximum_years_post_docing_2,
+           maximum_years_post_phd = maximum_years_post_ph_d_2,
            contributor_name = your_name,
            contributor_url = profile_url,
            date_created = created_at) |> 
@@ -35,15 +35,16 @@ if (nrow(new_data) != 0){
         eligible_host_location
       ),
       eligible_nationalities = dplyr::if_else(
-        eligible_nationalities_23 == "Specific European countries", 
-        eligible_nationalities_24, 
-        eligible_nationalities_23),
+        eligible_nationalities_24 == "Specific European countries", 
+        eligible_nationalities_25, 
+        eligible_nationalities_24),
       field_category_major = as.factor(field_category_major),
       field_category_minor = as.factor(field_category_minor),
+      application_deadline = lubridate::date(application_deadline),
       application_deadline = if_else(
-        isTRUE(rolling_application_deadline), 
-        NA, 
-        lubridate::date(application_deadline)),
+        is.na(rolling_application_deadline), 
+        lubridate::date(application_deadline),
+        NA),
       date_created = lubridate::date(date_created),
       requires_mobility = dplyr::if_else(
         isTRUE(requires_mobility),
@@ -59,19 +60,20 @@ if (nrow(new_data) != 0){
         FALSE
       ),
       minimum_years_post_phd = as.numeric(minimum_years_post_phd),
-      maximum_years_in_postdoc = as.numeric(maximum_years_in_postdoc),
+      maximum_years_post_phd = as.numeric(maximum_years_post_phd),
       contributor_name = as.character(contributor_name),
       contributor_url = as.character(contributor_url),
-      comments = as.character(comments)) |> 
+      comments = as.character(comments),
+      date_updated = date_created) |> 
     dplyr::select(
       -c(eligible_countries,
          limited_to_specific_institution, 
          only_available_within_specific_fields,
          rolling_application_deadline,
          minimum_years_post_ph_d,
-         maximum_years_post_docing,
-         eligible_nationalities_23,
-         eligible_nationalities_24)) |> 
+         maximum_years_post_ph_d,
+         eligible_nationalities_24,
+         eligible_nationalities_25)) |> 
     dplyr::relocate(eligible_nationalities, .after = eligible_institution) |> 
     dplyr::relocate(fellowship_duration, .after = fellowship_url)
   

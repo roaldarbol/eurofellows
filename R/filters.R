@@ -1,218 +1,285 @@
-# Filter functions for the fellowship dashboard
-
-#' Radio button filter for single selection with default
-#' 
-#' @param id Unique identifier for the filter
-#' @param label Label text for the filter (not displayed in current implementation)
-#' @param shared_data SharedData object from crosstalk
-#' @param group Column name to filter on
-#' @param width CSS width specification
-#' @param class CSS class for styling
-#' @param default_value Default selected value
-radio_filter <- function(id, label, shared_data, group, width = "100%", 
-                         class = "filter-input", default_value = "Postdoc") {
+# Simple solution: Use filter_checkbox styled as a toggle
+create_career_stage_filter <- function(shared_data) {
   
-  # Get unique values from the column
-  values <- unique(shared_data$data()[[group]]) |>
-    na.omit() |>
-    sort()
-  
-  keys <- shared_data$key()
-  
-  # Create mapping of value to keys
-  value_to_keys <- list()
-  for (i in seq_along(shared_data$data()[[group]])) {
-    val <- shared_data$data()[[group]][i]
-    if (!is.na(val)) {
-      value_to_keys[[val]] <- c(value_to_keys[[val]], keys[i])
-    }
-  }
-  
-  # JavaScript for radio button functionality
-  script <- sprintf("
-    window['__ct__%s'] = (function() {
-      const handle = new window.crosstalk.FilterHandle('%s')
-      const map = %s
-      
-      // Set default filter
-      setTimeout(function() {
-        handle.set(map['%s'] || [])
-      }, 100)
-      
-      return {
-        filter: function(value) {
-          handle.set(map[value] || [])
-        }
-      }
-    })()
-  ", id, shared_data$groupName(), toJSON(value_to_keys, auto_unbox = FALSE), default_value)
-  
-  # Create radio button group
-  div(
-    class = class,
+  tagList(
+    # Standard crosstalk filter (will be styled with CSS)
     tags$div(
-      class = "radio-group",
-      lapply(values, function(v) {
-        option_id <- paste0(id, "_", gsub("[^A-Za-z0-9]", "_", v))
-        tags$div(
-          class = "radio-option",
-          tags$input(
-            type = "radio",
-            id = option_id,
-            name = id,
-            value = v,
-            checked = if(v == default_value) NA else NULL,
-            onchange = sprintf("window['__ct__%s'].filter(this.value)", id)
-          ),
-          tags$label(`for` = option_id, v)
+      class = "career-stage-wrapper",
+      crosstalk::filter_checkbox(
+        id = "career_stage_toggle",
+        label = NULL,  # We'll create custom labels
+        shared_data,
+        ~career_stage,
+        inline = TRUE
+      )
+    ),
+    
+    # JavaScript to handle the postdoc-specific filters visibility
+    tags$script(HTML("
+      document.addEventListener('DOMContentLoaded', function() {
+        
+        function updatePostdocFiltersVisibility() {
+          // Get the checkbox states
+          const phdCheckbox = document.querySelector('input[value=\"PhD\"]');
+          const postdocCheckbox = document.querySelector('input[value=\"Postdoc\"]');
+          const advancedFilters = document.getElementById('postdoc-advanced-filters');
+          
+          if (phdCheckbox && postdocCheckbox && advancedFilters) {
+            // Show postdoc filters only if Postdoc is checked
+            if (postdocCheckbox.checked) {
+              advancedFilters.style.display = 'block';
+              advancedFilters.style.opacity = '1';
+            } else {
+              advancedFilters.style.display = 'none';
+            }
+          }
+        }
+        
+        // Wait for crosstalk to initialize
+        setTimeout(function() {
+          // Find and attach listeners to the checkboxes
+          const phdCheckbox = document.querySelector('input[value=\"PhD\"]');
+          const postdocCheckbox = document.querySelector('input[value=\"Postdoc\"]');
+          
+          if (phdCheckbox && postdocCheckbox) {
+            
+            // Add change listeners
+            phdCheckbox.addEventListener('change', updatePostdocFiltersVisibility);
+            postdocCheckbox.addEventListener('change', updatePostdocFiltersVisibility);
+            
+            // Set initial state - default to Postdoc only
+            phdCheckbox.checked = true;
+            postdocCheckbox.checked = true;
+            
+            // Trigger change events to apply the filter
+            postdocCheckbox.dispatchEvent(new Event('change'));
+            
+            // Update visibility
+            updatePostdocFiltersVisibility();
+            
+            console.log('Career stage filter initialized with Postdoc selected');
+          }
+        }, 200);
+      });
+    "))
+  )
+}
+
+create_compact_filters <- function(shared_fellowships) {
+  
+  tags$div(
+    class = "filter-box compact-layout",
+    
+    # Header with career stage toggle
+    tags$div(
+      class = "filter-header",
+      tags$div(
+        class = "filter-title-section",
+        tags$h4(class = "filter-title", 
+                tags$span(class = "filter-icon", fa("filter", fill = "#3b82f6")), 
+                "Filter Fellowships"
         )
-      })
+      ),
+      tags$div(
+        # class = "career-pills",
+        create_career_stage_filter(shared_fellowships),
+        # crosstalk::filter_checkbox(
+        #   id = "career_stage",
+        #   label = NULL, 
+        #   shared_fellowships,
+        #   ~career_stage,
+        #   inline = TRUE
+        #   # multiple = TRUE
+        # )
+      )
     ),
-    tags$script(HTML(script))
-  )
-}
-
-#' Multi-select filter for columns with comma-separated values
-#' 
-#' @param id Unique identifier for the filter
-#' @param label Label text for the filter
-#' @param shared_data SharedData object from crosstalk
-#' @param group Column name to filter on
-#' @param width CSS width specification
-#' @param class CSS class for styling
-#' @param custom_order Optional vector specifying custom ordering of options
-multi_select_filter <- function(id, label, shared_data, group, width = "100%", 
-                                class = "filter-input", custom_order = NULL, catchall_input = "any") {
-  
-  # Extract and process values from comma-separated strings
-  raw_vals <- shared_data$data()[[group]]
-  keys <- shared_data$key()
-  
-  split_vals <- strsplit(raw_vals, ",\\s*") |>
-    lapply(trimws)
-  
-  # Build value-to-keys mapping
-  value_to_keys <- list()
-  for (i in seq_along(split_vals)) {
-    for (v in split_vals[[i]]) {
-      lc_v <- tolower(v)
-      value_to_keys[[lc_v]] <- c(value_to_keys[[lc_v]], keys[i])
-    }
-  }
-  
-  # Create option list
-  raw_pieces <- unique(unlist(strsplit(raw_vals, ",\\s*"))) |>
-    trimws() |>
-    (\(x) x[x != "" & x != catchall_input])()
-  
-  # Apply custom ordering if provided
-  if (!is.null(custom_order)) {
-    custom_items <- intersect(custom_order, raw_pieces)
-    remaining_items <- setdiff(raw_pieces, custom_order) |> sort()
-    raw_pieces <- c(custom_items, remaining_items)
-  } else {
-    raw_pieces <- sort(raw_pieces)
-  }
-  
-  opts_df <- data.frame(
-    display = raw_pieces,
-    value = tolower(raw_pieces),
-    stringsAsFactors = FALSE
-  )
-  
-  # JavaScript for multi-select functionality
-  script <- sprintf("
-    window['__ct__%s'] = (function() {
-      const handle = new window.crosstalk.FilterHandle('%s')
-      const map = %s
-      return {
-        filter: function() {
-          const sel = Array.from(document.getElementById('%s').selectedOptions)
-                           .map(o => o.value)
-          if (sel.length === 0 || sel.includes('')) {
-            handle.clear()
-            return
+    
+    # Main filters in compact grid
+    tags$div(
+      class = "filters-grid-main",
+      
+      # Row 1: Core filters
+      tags$div(
+        class = "filter-row-primary",
+        
+        # Host countries
+        tags$div(
+          class = "filter-group compact",
+          crosstalk::filter_select(
+            "eligible_host_location",
+            label =  tags$label(class = "filter-label",
+                                tags$span(class = "filter-icon", fa("location-dot")), 
+                                "Countries"),
+            shared_fellowships,
+            ~eligible_host_location,
+            multiple = TRUE,
+            allLevels = TRUE
+          )
+        ),
+        
+        # Deadline range
+        tags$div(
+          class = "filter-group deadline-range",
+          crosstalk::filter_slider(
+            id = "application_deadline",
+            label = tags$label(class = "filter-label",
+                               tags$span(class = "filter-icon", fa("calendar")), 
+                               "Application Deadline"
+            ),
+            sharedData = shared_fellowships,
+            column = ~application_deadline,
+            round = TRUE,
+            ticks = FALSE
+          )
+        ),
+      ),
+      
+      # Row 2: Requirements and deadline
+      tags$div(
+        class = "filter-row-primary",
+        
+        # Fields
+        tags$div(
+          class = "filter-group compact",
+          crosstalk::filter_select(
+            "eligible_fields", 
+            label = tags$label(class = "filter-label", 
+                               tags$span(class = "filter-icon", fa("microscope")), 
+                               "Field"
+            ),
+            shared_fellowships, 
+            ~eligible_fields,
+            multiple = TRUE,
+            allLevels = TRUE
+          )
+        ),
+        
+        # Duration
+        tags$div(
+          class = "filter-group compact",
+          crosstalk::filter_slider(
+            id = "fellowship_duration",
+            label = tags$label(class = "filter-label",
+                               tags$span(class = "filter-icon", fa("far fa-clock")), 
+                               "Duration (max)"
+            ),
+            sharedData = shared_fellowships,
+            column = ~fellowship_duration,
+            post = "y",
+            step = 1,
+            ticks = FALSE
+          )
+        )
+      )
+    ),
+    
+    # Postdoc-only filters (collapsible section)
+    tags$div(
+      id = "postdoc-advanced-filters",
+      class = "advanced-filters-section",
+      style = "display: block;", # Show by default for postdoc
+      
+      tags$div(
+        class = "filter-row-postdoc",
+        
+        # Requirements (compact dropdowns)
+        tags$div(
+          class = "filter-group compact",
+          crosstalk::filter_select(
+            id = "requires_mobility",
+            label = tags$label(class = "req-label", fa("plane-departure"), "Mobility"),
+            sharedData = shared_fellowships,
+            group = ~stringr::str_to_title(requires_mobility),
+            multiple = FALSE
+          )
+        ),
+        tags$div(
+          class = "filter-group compact",
+          crosstalk::filter_select(
+            id = "requires_phd",
+            label = tags$label(class = "req-label", fa("graduation-cap"), "PhD"),
+            sharedData = shared_fellowships,
+            group = ~stringr::str_to_title(requires_phd),
+            multiple = FALSE
+          )
+        ),
+        tags$div(
+          class = "filter-group compact",
+          crosstalk::filter_select(
+            id = "requires_publication",
+            label = tags$label(class = "req-label", fa("far fa-pen-to-square"), "Publication"),
+            sharedData = shared_fellowships,
+            group = ~stringr::str_to_title(requires_publication),
+            multiple = FALSE
+          )
+        ),
+        tags$div(),
+        tags$div(
+          class = "filter-toggles",
+          tags$label(
+            class = "toggle-checkbox",
+            tags$input(type = "checkbox", id = "toggle-min-years"),
+            tags$span(class = "toggle-text", "Min years")
+          ),
+          tags$label(
+            class = "toggle-checkbox",
+            tags$input(type = "checkbox", id = "toggle-max-years"),
+            tags$span(class = "toggle-text", "Max years")
+          )
+        )
+      ),
+      
+      tags$div(
+        class = "experience-sliders",
+        # tags$div(
+        #   id = "min-years-filter",
+        #   class = "slider-container",
+        #   crosstalk::filter_slider(
+        #     id = "minimum_years_post_phd",
+        #     "Minimum years post-PhD",
+        #     sharedData = shared_fellowships,
+        #     column = ~minimum_years_post_phd,
+        #     post = "y",
+        #     step = 1,
+        #     ticks = FALSE
+        #   )
+        # ),
+        tags$div(
+          id = "max-years-filter",
+          class = "slider-container",
+          crosstalk::filter_slider(
+            id = "maximum_years_post_phd",
+            "Maximum years post-PhD",
+            sharedData = shared_fellowships,
+            column = ~maximum_years_post_phd,
+            post = "y",
+            step = 1,
+            ticks = FALSE
+          )
+        )
+      )
+    ),
+    
+    # Slider toggle functionality
+    tags$script(HTML("
+      document.addEventListener('DOMContentLoaded', function() {
+        function bindSliderToggle(checkboxId, sliderId) {
+          const checkbox = document.getElementById(checkboxId);
+          const sliderDiv = document.getElementById(sliderId);
+          
+          if (checkbox && sliderDiv) {
+            function updateSliderVisibility() {
+              sliderDiv.style.display = checkbox.checked ? 'block' : 'none';
+            }
+            
+            checkbox.addEventListener('change', updateSliderVisibility);
+            updateSliderVisibility(); // Initial state
           }
-          const allKeys = sel.reduce((acc, val) => {
-            const ks = map[val] || []
-            ks.forEach(k => { if (!acc.includes(k)) acc.push(k) })
-            return acc
-          }, [])
-          handle.set(allKeys)
         }
-      }
-    })()
-  ", id, shared_data$groupName(), toJSON(value_to_keys, auto_unbox = FALSE), id)
-  
-  # Create select element
-  div(
-    class = class,
-    tags$label(`for` = id, label),
-    tags$select(
-      id = id,
-      multiple = NA,
-      size = 4,
-      onchange = sprintf("window['__ct__%s'].filter()", id),
-      style = sprintf("width: %s", validateCssUnit(width)),
-      tags$option(value = "", catchall_input),
-      lapply(seq_len(nrow(opts_df)), function(i) {
-        tags$option(value = opts_df$value[i], opts_df$display[i])
-      })
-    ),
-    tags$script(HTML(script))
-  )
-}
-
-#' Search filter for text-based filtering
-#' 
-#' @param id Unique identifier for the filter
-#' @param label Label text for the filter
-#' @param shared_data SharedData object from crosstalk
-#' @param group Column name to filter on
-#' @param width CSS width specification
-#' @param class CSS class for styling
-search_filter <- function(id, label, shared_data, group, width = "100%", 
-                          class = "filter-input") {
-  
-  values <- as.list(shared_data$data()[[group]])
-  keys <- shared_data$key()
-  values_by_key <- setNames(values, keys)
-  
-  script <- sprintf("
-    window['__ct__%s'] = (function() {
-      const handle = new window.crosstalk.FilterHandle('%s')
-      const valuesByKey = %s
-      return {
-        filter: function(value) {
-          if (!value) {
-            handle.clear()
-          } else {
-            value = value.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')
-            const regex = new RegExp(value, 'i')
-            const filtered = Object.keys(valuesByKey).filter(k => {
-              const v = valuesByKey[k]
-              if (Array.isArray(v)) {
-                return v.some(item => regex.test(item))
-              } else {
-                return regex.test(v)
-              }
-            })
-            handle.set(filtered)
-          }
-        }
-      }
-    })()
-  ", id, shared_data$groupName(), toJSON(values_by_key))
-  
-  div(
-    class = class,
-    tags$label(`for` = id, label),
-    tags$input(
-      id = id,
-      type = "search",
-      oninput = sprintf("window['__ct__%s'].filter(this.value)", id),
-      style = sprintf("width: %s", validateCssUnit(width))
-    ),
-    tags$script(HTML(script))
+        
+        bindSliderToggle('toggle-min-years', 'min-years-filter');
+        bindSliderToggle('toggle-max-years', 'max-years-filter');
+      });
+    "))
   )
 }
