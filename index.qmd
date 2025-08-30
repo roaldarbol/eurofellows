@@ -123,7 +123,15 @@ div(
   tags$hr(),
   
   # Fellowship cards table
-  fellowship_table
+  fellowship_table,
+  htmltools::browsable(
+    tags$button(class = "download-btn", 
+                tags$label(class = "filter-label-download",
+                           tags$span(class = "filter-icon", 
+                                     fa("download")), 
+                           "Download as CSV"), 
+                onclick = "Reactable.downloadDataCSV('fellowship_table', 'european-fellowships.csv')")
+    )
 )
 ```
 
