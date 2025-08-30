@@ -991,3 +991,32 @@ details > p {
   }
 }
 
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: #3b82f6;
+  color: white !important;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.download-btn:hover {
+  background: #2563eb;
+  color: white !important;
+  text-decoration: none;
+}
+
+.filter-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  color: white !important;
+}
