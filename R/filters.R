@@ -179,6 +179,7 @@ create_compact_filters <- function(shared_fellowships) {
       class = "advanced-filters-section",
       style = "display: block;", # Show by default for postdoc
       
+      tags$h5("Postdoc-specific"),
       tags$div(
         class = "filter-row-postdoc",
         
@@ -189,7 +190,7 @@ create_compact_filters <- function(shared_fellowships) {
             id = "requires_mobility",
             label = tags$label(class = "req-label", fa("plane-departure"), "Mobility"),
             sharedData = shared_fellowships,
-            group = ~stringr::str_to_title(requires_mobility),
+            group = ~if_else(requires_mobility == TRUE, "Required", "Not required"),
             multiple = FALSE
           )
         ),
@@ -199,7 +200,7 @@ create_compact_filters <- function(shared_fellowships) {
             id = "requires_phd",
             label = tags$label(class = "req-label", fa("graduation-cap"), "PhD"),
             sharedData = shared_fellowships,
-            group = ~stringr::str_to_title(requires_phd),
+            group = ~if_else(requires_phd == TRUE, "Required", "Not required"),
             multiple = FALSE
           )
         ),
@@ -209,7 +210,7 @@ create_compact_filters <- function(shared_fellowships) {
             id = "requires_publication",
             label = tags$label(class = "req-label", fa("far fa-pen-to-square"), "Publication"),
             sharedData = shared_fellowships,
-            group = ~stringr::str_to_title(requires_publication),
+            group = ~if_else(requires_publication == TRUE, "Required", "Not required"),
             multiple = FALSE
           )
         ),

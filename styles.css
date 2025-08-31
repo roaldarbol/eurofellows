@@ -19,6 +19,10 @@ h1 {
   font-style: normal;
 }
 
+h5 {
+  font-weight: 600;
+}
+
 @media screen and (max-width: 640px) {
   h1 {
     font-size: 5rem;

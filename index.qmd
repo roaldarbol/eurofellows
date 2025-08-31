@@ -45,9 +45,10 @@ set.seed(123)
 
 ```{r load-data}
 #| include: FALSE
-data <- vroom::vroom("data/european-fellowships.csv") |> 
+data <- vroom::vroom("data/european-fellowships.csv")
+data <- data |>   
   dplyr::arrange(application_deadline) |> 
-  dplyr::mutate(eligible_fields = if_else(is.na(eligible_fields), "Any field", eligible_fields),
+  dplyr::mutate(eligible_fields = if_else(is.na(eligible_fields), "Any field", eligible_fields)
                 # application_deadline = as.Date(application_deadline, tz = "UTC")
                 )
 ```
