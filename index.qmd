@@ -48,7 +48,10 @@ set.seed(123)
 data <- vroom::vroom("data/european-fellowships.csv")
 data <- data |>   
   dplyr::arrange(application_deadline) |> 
-  dplyr::mutate(eligible_fields = if_else(is.na(eligible_fields), "Any field", eligible_fields)
+  dplyr::mutate(eligible_fields = if_else(is.na(eligible_fields), "Any field", eligible_fields),
+                requires_mobility = if_else(requires_mobility == TRUE, "Required", "Not required"),
+                requires_phd = if_else(requires_phd == TRUE, "Required", "Not required"),
+                requires_publication = if_else(requires_publication == TRUE, "Required", "Not required")
                 # application_deadline = as.Date(application_deadline, tz = "UTC")
                 )
 ```

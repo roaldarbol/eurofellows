@@ -105,17 +105,17 @@ create_eligibility_badges <- function(row) {
   }
   
   # Mobility requirements
-  if (!is.na(row$requires_mobility) && row$requires_mobility == TRUE) {
+  if (!is.na(row$requires_mobility) && row$requires_mobility == "Required") {
     badges <- c(badges, "Mobility required")
   }
   
   # PhD requirements
-  if (!is.na(row$requires_phd) && row$requires_phd == TRUE) {
+  if (!is.na(row$requires_phd) && row$requires_phd == "Required") {
     badges <- c(badges, "PhD required")
   }
   
   # Publication requirements
-  if (!is.na(row$requires_publication) && row$requires_publication == TRUE) {
+  if (!is.na(row$requires_publication) && row$requires_publication == "Required") {
     badges <- c(badges, "Publications required")
   }
   

@@ -190,8 +190,8 @@ create_compact_filters <- function(shared_fellowships) {
             id = "requires_mobility",
             label = tags$label(class = "req-label", fa("plane-departure"), "Mobility"),
             sharedData = shared_fellowships,
-            group = ~if_else(requires_mobility == TRUE, "Required", "Not required"),
-            multiple = FALSE
+            group = ~requires_mobility,
+            multiple = TRUE
           )
         ),
         tags$div(
@@ -200,8 +200,8 @@ create_compact_filters <- function(shared_fellowships) {
             id = "requires_phd",
             label = tags$label(class = "req-label", fa("graduation-cap"), "PhD"),
             sharedData = shared_fellowships,
-            group = ~if_else(requires_phd == TRUE, "Required", "Not required"),
-            multiple = FALSE
+            group = ~stringr::str_to_title(requires_phd),
+            multiple = TRUE
           )
         ),
         tags$div(
@@ -210,8 +210,8 @@ create_compact_filters <- function(shared_fellowships) {
             id = "requires_publication",
             label = tags$label(class = "req-label", fa("far fa-pen-to-square"), "Publication"),
             sharedData = shared_fellowships,
-            group = ~if_else(requires_publication == TRUE, "Required", "Not required"),
-            multiple = FALSE
+            group = ~stringr::str_to_title(requires_publication),
+            multiple = TRUE
           )
         ),
         tags$div(),
