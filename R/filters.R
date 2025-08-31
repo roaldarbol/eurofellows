@@ -198,7 +198,7 @@ create_compact_filters <- function(shared_fellowships) {
           class = "filter-group compact",
           crosstalk::filter_select(
             id = "requires_phd",
-            label = tags$label(class = "req-label", fa("graduation-cap"), "PhD"),
+            label = tags$label(class = "req-label", fa("graduation-cap"), "PhD (by application deadline)"),
             sharedData = shared_fellowships,
             group = ~stringr::str_to_title(requires_phd),
             multiple = TRUE
