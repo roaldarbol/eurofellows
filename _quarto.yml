@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "European Fellowship Database"
+  title: "European Fellowship Index"
   favicon: assets/eu-favicon.png
   search: false
   navbar:
@@ -15,11 +15,7 @@ website:
     background: "#003399" # Only for testing the fellowship dashboard
     tools:
       - icon: github
-        menu:
-          - text: Report an issue
-            href:  https://github.com/roaldarbol/eu-fellowships/issues
-          - text: Source Code
-            href:  https://github.com/roaldarbol/eu-fellowships
+        href:  https://github.com/roaldarbol/eu-fellowships
       # - href: https://quarto.org/docs/websites/website-navigation.html
       #   text: Contribute
     right:
@@ -28,7 +24,15 @@ website:
         text: Submit fellowship
   page-footer:
     border: false
-    center: "2025, Mikkel Roald-Arbøl"
+    left: "2025, Mikkel Roald-Arbøl"
+    right:
+      - text: "About"   
+        href:  https://github.com/roaldarbol/eu-fellowships/issues
+      - text: Report an issue
+        href:  https://github.com/roaldarbol/eu-fellowships/issues
+      - text: Source Code
+        href:  https://github.com/roaldarbol/eu-fellowships
+    
     
 
 format:
