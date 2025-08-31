@@ -52,7 +52,6 @@ data <- data |>
                 requires_mobility = if_else(requires_mobility == TRUE, "Required", "Not required"),
                 requires_phd = if_else(requires_phd == TRUE, "Required", "Not required"),
                 requires_publication = if_else(requires_publication == TRUE, "Required", "Not required")
-                # application_deadline = as.Date(application_deadline, tz = "UTC")
                 )
 ```
 
