@@ -26,7 +26,7 @@ website:
     border: false
     left: "2025, Mikkel Roald-Arbøl"
     center:
-      - text: Report an issue
+      - text: Report issue
         href:  https://github.com/roaldarbol/eu-fellowships/issues
       - text: Source Code
         href:  https://github.com/roaldarbol/eu-fellowships
