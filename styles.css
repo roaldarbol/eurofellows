@@ -48,6 +48,23 @@ h1 {
   border-bottom: 1px solid #f3f4f6;
 }
 
+.career-stage-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.crosstalk-options-group {
+  display: flex;
+  gap: 16px;
+}
+
+/* Mobile: center the PhD/Postdoc checkboxes */
+@media (max-width: 768px) {
+  .career-stage-wrapper {
+    justify-content: center;
+  }
+}
+
 .filter-title {
   font-family: "Montserrat", sans-serif;
   font-size: 1.4rem;
@@ -81,6 +98,22 @@ h1 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 4px;
+}
+
+/* Mobile: stack requirement filters on separate lines, group toggles together */
+@media (max-width: 768px) {
+  .filter-row-postdoc {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .filter-toggles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 16px;
+  }
 }
 
 .filter-group.compact {
