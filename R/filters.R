@@ -100,7 +100,7 @@ create_compact_filters <- function(shared_fellowships) {
       
       # Row 1: Core filters
       tags$div(
-        class = "filter-row-primary",
+        class = "filter-row-triple",
         
         # Host countries
         tags$div(
@@ -109,34 +109,13 @@ create_compact_filters <- function(shared_fellowships) {
             "eligible_host_location",
             label =  tags$label(class = "filter-label",
                                 tags$span(class = "filter-icon", fa("location-dot")), 
-                                "Countries"),
+                                "Host country"),
             shared_fellowships,
             ~eligible_host_location,
             multiple = TRUE,
             allLevels = TRUE
           )
         ),
-        
-        # Deadline range
-        tags$div(
-          class = "filter-group deadline-range",
-          crosstalk::filter_slider(
-            id = "application_deadline",
-            label = tags$label(class = "filter-label",
-                               tags$span(class = "filter-icon", fa("calendar")), 
-                               "Application Deadline"
-            ),
-            sharedData = shared_fellowships,
-            column = ~application_deadline,
-            round = TRUE,
-            ticks = FALSE
-          )
-        ),
-      ),
-      
-      # Row 2: Requirements and deadline
-      tags$div(
-        class = "filter-row-primary",
         
         # Fields
         tags$div(
@@ -154,6 +133,27 @@ create_compact_filters <- function(shared_fellowships) {
           )
         ),
         
+        # Nationality
+        tags$div(
+          class = "filter-group compact",
+          crosstalk::filter_select(
+            "eligible_nationalities", 
+            label = tags$label(class = "filter-label", 
+                               tags$span(class = "filter-icon", fa("flag")), 
+                               "Nationality"
+            ),
+            shared_fellowships, 
+            ~eligible_nationalities,
+            multiple = TRUE,
+            allLevels = TRUE
+          )
+        )
+      ),
+      
+      # Row 2: Requirements and deadline
+      tags$div(
+        class = "filter-row-double",
+        
         # Duration
         tags$div(
           class = "filter-group compact",
@@ -167,6 +167,22 @@ create_compact_filters <- function(shared_fellowships) {
             column = ~fellowship_duration,
             post = "y",
             step = 1,
+            ticks = FALSE
+          )
+        ),
+        
+        # Deadline range
+        tags$div(
+          class = "filter-group deadline-range",
+          crosstalk::filter_slider(
+            id = "application_deadline",
+            label = tags$label(class = "filter-label",
+                               tags$span(class = "filter-icon", fa("calendar")), 
+                               "Application Deadline"
+            ),
+            sharedData = shared_fellowships,
+            column = ~application_deadline,
+            round = TRUE,
             ticks = FALSE
           )
         )
