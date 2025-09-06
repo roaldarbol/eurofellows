@@ -94,6 +94,11 @@ create_eligibility_badges <- function(row) {
                                 paste(row$eligible_host_location[[1]], collapse = ", "), 
                                 paste(row$eligible_institution, paste(row$eligible_host_location[[1]], collapse = ", "), sep = ", ")))
   }
+  
+  # Duration
+  if (!is.na(row$fellowship_duration) && row$fellowship_duration != "") {
+    badges <- c(badges, paste(row$fellowship_duration, "years"))
+  }
 
   # # Academic field requirements
   if (!is.na(row$eligible_fields) && 
@@ -133,8 +138,9 @@ create_eligibility_badges <- function(row) {
   badge_elements <- lapply(badges, function(badge) {
     # Use different icons for different types of requirements
     icon <- if (badge == badges[1]) "📍"
+    else if (grepl("years", badge) && !grepl("PhD", badge)) {"⏱️"}
     else if (grepl("Limited", badge)) "🔬"
-    else if (grepl("years", badge)) "⏳" 
+    else if (grepl("post-PhD", badge)) "⏳" 
     else if (grepl("Mobility", badge)) "✈️"
     else if (grepl("PhD", badge)) "🎓"
     else if (grepl("Publications", badge)) "📚"
@@ -204,13 +210,13 @@ render_fellowship_card <- function(value, index) {
         # ),
         
         # Duration
-        tags$div(
-          class = "header-detail-item",
-          tags$span(class = "detail-icon", "⏱️"),
-          tags$span(class = "detail-text", 
-                    if(is.na(row$fellowship_duration)) "Duration TBD" else paste(row$fellowship_duration, "years")
-          )
-        ),
+        # tags$div(
+        #   class = "header-detail-item",
+        #   tags$span(class = "detail-icon", "⏱️"),
+        #   tags$span(class = "detail-text", 
+        #             if(is.na(row$fellowship_duration)) "Duration TBD" else paste(row$fellowship_duration, "years")
+        #   )
+        # ),
         
         # Deadline with urgency
         tags$div(
