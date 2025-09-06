@@ -92,7 +92,7 @@ create_eligibility_badges <- function(row) {
     
     badges <- c(badges, if_else(is.na(row$eligible_institution), 
                                 paste(row$eligible_host_location[[1]], collapse = ", "), 
-                                row$eligible_institution))
+                                paste(row$eligible_institution, paste(row$eligible_host_location[[1]], collapse = ", "), sep = ", ")))
   }
 
   # # Academic field requirements
