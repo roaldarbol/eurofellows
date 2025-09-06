@@ -105,47 +105,41 @@ create_compact_filters <- function(shared_fellowships) {
         # Host countries
         tags$div(
           class = "filter-group compact",
-          crosstalk::filter_select(
+          reactable_select_filter(
             "eligible_host_location",
             label =  tags$label(class = "filter-label",
                                 tags$span(class = "filter-icon", fa("location-dot")), 
                                 "Host country"),
             shared_fellowships,
-            ~eligible_host_location,
-            multiple = TRUE,
-            allLevels = TRUE
+            "eligible_host_location"
           )
         ),
         
         # Fields
         tags$div(
           class = "filter-group compact",
-          crosstalk::filter_select(
+          reactable_select_filter(
             "eligible_fields", 
             label = tags$label(class = "filter-label", 
                                tags$span(class = "filter-icon", fa("microscope")), 
                                "Field"
             ),
             shared_fellowships, 
-            ~eligible_fields,
-            multiple = TRUE,
-            allLevels = TRUE
+            "eligible_fields"
           )
         ),
         
         # Nationality
         tags$div(
           class = "filter-group compact",
-          crosstalk::filter_select(
+          reactable_select_filter(
             "eligible_nationalities", 
             label = tags$label(class = "filter-label", 
                                tags$span(class = "filter-icon", fa("flag")), 
                                "Nationality"
             ),
             shared_fellowships, 
-            ~eligible_nationalities,
-            multiple = TRUE,
-            allLevels = TRUE
+            "eligible_nationalities"
           )
         )
       ),

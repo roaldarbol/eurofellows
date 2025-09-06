@@ -25,6 +25,7 @@ title-block-banner: "linear-gradient(rgba(0, 51, 153, 1), rgba(0, 51, 153, 0.3))
 
 # Load required packages
 library(dplyr)
+library(purrr)
 library(reactable)
 library(htmltools)
 library(jsonlite)
@@ -36,6 +37,7 @@ library(lubridate)
 library(fontawesome)
 
 # Source filter functions
+source("R/custom_filters.R")
 source("R/filters.R")
 source("R/card-renderer.R")
 
@@ -44,20 +46,26 @@ set.seed(123)
 
 ```{r load-data}
 #| include: FALSE
-data <- vroom::vroom("data/european-fellowships.csv")
-data <- data |>   
-  dplyr::arrange(application_deadline) |> 
-  dplyr::mutate(eligible_fields = if_else(is.na(eligible_fields), "Any field", eligible_fields),
-                requires_mobility = if_else(requires_mobility == TRUE, "Required", "Not required"),
-                requires_phd = if_else(requires_phd == TRUE, "Required", "Not required"),
-                requires_publication = if_else(requires_publication == TRUE, "Required", "Not required")
-                )
+data <- vroom::vroom("data/european-fellowships.csv") |>
+  dplyr::arrange(application_deadline) |>
+  dplyr::mutate(
+    dplyr::across(
+      dplyr::where(~ is.character(.x) && any(grepl(",", .x, fixed = TRUE), na.rm = TRUE)) & !matches("comments") & !matches("fellowship_title"),
+      ~ strsplit(.x, ",") |> map(~ trimws(.x)),
+      .names = "{.col}"
+    )
+  ) |> 
+  dplyr::filter(application_deadline > lubridate::today())
 ```
 
 ```{r setup-crosstalk}
 #| include: FALSE
+
+# Shared data for reactable
+shared_data <- SharedData$new(data)
+
 # Create shared data objects for crosstalk filtering
-shared_fellowships <- SharedData$new(data)
+shared_fellowships <- SharedData$new(data, group = shared_data$groupName())
 ```
 
 ```{r create-table}
@@ -65,7 +73,7 @@ shared_fellowships <- SharedData$new(data)
 
 # Create the main reactable
 fellowship_table <- reactable(
-  shared_fellowships,
+  shared_data,
   elementId = "fellowship_table",
   filterable = FALSE,
   searchable = FALSE,
@@ -75,6 +83,8 @@ fellowship_table <- reactable(
   class = "fellowship-table enhanced-cards",  # Added "enhanced-cards" class
   pagination = TRUE,
   defaultPageSize = 12,
+  showPageSizeOptions = TRUE,
+  pageSizeOptions = c(12, 24, 100),
   
   columns = list(
     fellowship_title = colDef(
@@ -91,6 +101,7 @@ fellowship_table <- reactable(
     application_deadline = colDef(show = FALSE),
     eligible_host_location = colDef(show = FALSE),
     eligible_institution = colDef(show = FALSE),
+    eligible_nationalities_from_or_not = colDef(show = FALSE),
     eligible_nationalities = colDef(show = FALSE),
     eligible_fields = colDef(show = FALSE),
     field_category_major = colDef(show = FALSE),
@@ -107,7 +118,19 @@ fellowship_table <- reactable(
     date_updated = colDef(show = FALSE)
   ),
   
-  rowStyle = list(cursor = "default"),
+  # rowStyle = list(cursor = "default"),
+  rowStyle = function(index) {
+    # Hide duplicate rows at the row level
+    current_row <- shared_fellowships$data()[index, ]
+    all_current_data <- shared_fellowships$data()
+    first_occurrence_index <- which(all_current_data$id == current_row$id)[1]
+    
+    if (index != first_occurrence_index) {
+      list(display = "none")
+    } else {
+      list(cursor = "default")
+    }
+  },
   theme = reactableTheme(
     cellPadding = "0px",  # Removed padding to let cards handle their own spacing
     searchInputStyle = list(width = "100%")
@@ -139,10 +162,15 @@ div(
 
 ```{js echo=FALSE}
 function filter_default() {
-    document.getElementById("career_stage").getElementsByClassName("selectized")
-    [0].selectize.setValue("Postdoc", true);
-    document.getElementById("career_stage").getElementsByClassName("selectized")
-    [0].selectize.setValue("PhD", true);
+    document.getElementById("career_stage").getElementsByClassName("selectized")[0].selectize.setValue("Postdoc", true);
+    document.getElementById("career_stage").getElementsByClassName("selectized")[0].selectize.setValue("PhD", true);
  }
 window.onload = filter_default;
+
+function remove_all_option() {
+  document.getElementById("eligible_host_location").getElementsByClassName("selectized")[0].selectize.removeOption("");
+  document.getElementById("eligible_fields").getElementsByClassName("selectized")[0].selectize.removeOption("");
+  document.getElementById("eligible_nationalities").getElementsByClassName("selectized")[0].selectize.removeOption("");
+}
+window.onload = remove_all_option;
 ```

@@ -86,13 +86,22 @@ create_eligibility_badges <- function(row) {
   badges <- c()
   
   # Host countries
-  if (!is.na(row$eligible_host_location) && row$eligible_host_location != "") {
-    badges <- c(badges, if_else(is.na(row$eligible_institution), row$eligible_host_location, row$eligible_institution))
+  if (!is.na(row$eligible_host_location) && 
+      row$eligible_host_location != "" && 
+      is.list(row$eligible_host_location)) {
+    
+    badges <- c(badges, if_else(is.na(row$eligible_institution), 
+                                paste(row$eligible_host_location[[1]], collapse = ", "), 
+                                row$eligible_institution))
   }
-  
-  # Academic field requirements
-  if (!is.na(row$eligible_fields) && row$eligible_fields != "" && row$eligible_fields != "Any field") {
-    badges <- c(badges, paste("Limited to", row$eligible_fields))
+
+  # # Academic field requirements
+  if (!is.na(row$eligible_fields) && 
+      row$eligible_fields != "" && 
+      row$eligible_fields != "Any Field" &&
+      is.list(row$eligible_fields)) {
+    
+    badges <- c(badges, paste("Limited to", paste(row$eligible_fields[[1]], collapse = ", ")))
   }
   
   # PhD experience requirements
