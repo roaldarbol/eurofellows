@@ -196,32 +196,29 @@ create_compact_filters <- function(shared_fellowships) {
         # Requirements (compact dropdowns)
         tags$div(
           class = "filter-group compact",
-          crosstalk::filter_select(
-            id = "requires_mobility",
+          reactable_select_filter(
+            "requires_mobility",
             label = tags$label(class = "req-label", fa("plane-departure"), "Mobility"),
-            sharedData = shared_fellowships,
-            group = ~requires_mobility,
-            multiple = TRUE
+            shared_fellowships,
+            "requires_mobility"
           )
         ),
         tags$div(
           class = "filter-group compact",
-          crosstalk::filter_select(
-            id = "requires_phd",
+          reactable_select_filter(
+            "requires_phd",
             label = tags$label(class = "req-label", fa("graduation-cap"), "PhD (by application deadline)"),
-            sharedData = shared_fellowships,
-            group = ~stringr::str_to_title(requires_phd),
-            multiple = TRUE
+            shared_fellowships,
+            "requires_phd" #~stringr::str_to_title(requires_phd)
           )
         ),
         tags$div(
           class = "filter-group compact",
-          crosstalk::filter_select(
-            id = "requires_publication",
+          reactable_select_filter(
+            "requires_publication",
             label = tags$label(class = "req-label", fa("far fa-pen-to-square"), "Publication"),
-            sharedData = shared_fellowships,
-            group = ~stringr::str_to_title(requires_publication),
-            multiple = TRUE
+            shared_fellowships,
+            "requires_publication"#~stringr::str_to_title(requires_publication),
           )
         ),
         tags$div(),
@@ -242,19 +239,19 @@ create_compact_filters <- function(shared_fellowships) {
       
       tags$div(
         class = "experience-sliders",
-        # tags$div(
-        #   id = "min-years-filter",
-        #   class = "slider-container",
-        #   crosstalk::filter_slider(
-        #     id = "minimum_years_post_phd",
-        #     "Minimum years post-PhD",
-        #     sharedData = shared_fellowships,
-        #     column = ~minimum_years_post_phd,
-        #     post = "y",
-        #     step = 1,
-        #     ticks = FALSE
-        #   )
-        # ),
+        tags$div(
+          id = "min-years-filter",
+          class = "slider-container",
+          crosstalk::filter_slider(
+            id = "minimum_years_post_phd",
+            "Minimum years post-PhD",
+            sharedData = shared_fellowships,
+            column = ~minimum_years_post_phd,
+            post = "y",
+            step = 1,
+            ticks = FALSE
+          )
+        ),
         tags$div(
           id = "max-years-filter",
           class = "slider-container",
