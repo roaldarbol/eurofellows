@@ -64,8 +64,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/ionrangeslider-javascript-2.3.1/js/ion.rangeSlider.min.js"></script>
 <script src="site_libs/strftime-0.9.2/strftime-min.js"></script>
 <link href="site_libs/ionrangeslider-css-2.3.1/css/ion.rangeSlider.css" rel="stylesheet">
-<link href="site_libs/selectize-0.12.4/css/selectize.bootstrap3.css" rel="stylesheet">
-<script src="site_libs/selectize-0.12.4/js/selectize.min.js"></script>
 <script src="site_libs/core-js-2.5.3/shim.min.js"></script>
 <script src="site_libs/react-18.2.0/react.min.js"></script>
 <script src="site_libs/react-18.2.0/react-dom.min.js"></script>
@@ -374,74 +372,92 @@ Application Deadline
 <h5 class="anchored">Postdoc-specific</h5>
 <div class="filter-row-postdoc">
 <div class="filter-group compact">
-<div id="requires_mobility" class="form-group crosstalk-input-select crosstalk-input">
-<label class="control-label" for="requires_mobility">
+<div class="filter-input">
+<label for="requires_mobility">
 <label class="req-label">
 <svg aria-hidden="true" role="img" viewbox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M381 114.9L186.1 41.8c-16.7-6.2-35.2-5.3-51.1 2.7L89.1 67.4C78 73 77.2 88.5 87.6 95.2l146.9 94.5L136 240 77.8 214.1c-8.7-3.9-18.8-3.7-27.3 .6L18.3 230.8c-9.3 4.7-11.8 16.8-5 24.7l73.1 85.3c6.1 7.1 15 11.2 24.3 11.2H248.4c5 0 9.9-1.2 14.3-3.4L535.6 212.2c46.5-23.3 82.5-63.3 100.8-112C645.9 75 627.2 48 600.2 48H542.8c-20.2 0-40.2 4.8-58.2 14L381 114.9zM0 480c0 17.7 14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32c-17.7 0-32 14.3-32 32z"></path></svg>
 Mobility
 </label>
 </label>
-<div>
-<select multiple=""></select>
-<script type="application/json" data-for="requires_mobility">{
-  "items": {
-    "value": ["Not required", "Required"],
-    "label": ["Not required", "Required"]
-  },
-  "map": {
-    "Not required": ["2", "3", "4", "8", "9", "12"],
-    "Required": ["1", "5", "6", "7", "10", "11", "13"]
-  },
-  "group": ["SharedData9eceb20d"]
-}</script>
-</div>
+<select id="requires_mobility" onchange="window['__ct__requires_mobility'].filter(this.value)" style="width: 100%">
+<option value="">All</option>
+<option value="Not required">Not required</option>
+<option value="Required">Required</option>
+</select>
+<script>
+    window['__ct__requires_mobility'] = (function() {
+      const handle = new window.crosstalk.FilterHandle('SharedData9eceb20d')
+      const keys = {"Not required":[2,3,4,8,9,12],"Required":[1,5,6,7,10,11,13]}
+      return {
+        filter: function(value) {
+          if (!value) {
+            handle.clear()
+          } else {
+            handle.set(keys[value])
+          }
+        }
+      }
+    })()
+  </script>
 </div>
 </div>
 <div class="filter-group compact">
-<div id="requires_phd" class="form-group crosstalk-input-select crosstalk-input">
-<label class="control-label" for="requires_phd">
+<div class="filter-input">
+<label for="requires_phd">
 <label class="req-label">
 <svg aria-hidden="true" role="img" viewbox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9v28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5V291.9c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"></path></svg>
 PhD (by application deadline)
 </label>
 </label>
-<div>
-<select multiple=""></select>
-<script type="application/json" data-for="requires_phd">{
-  "items": {
-    "value": ["Not Required"],
-    "label": ["Not Required"]
-  },
-  "map": {
-    "Not Required": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13"]
-  },
-  "group": ["SharedData9eceb20d"]
-}</script>
-</div>
+<select id="requires_phd" onchange="window['__ct__requires_phd'].filter(this.value)" style="width: 100%">
+<option value="">All</option>
+<option value="Not required">Not required</option>
+</select>
+<script>
+    window['__ct__requires_phd'] = (function() {
+      const handle = new window.crosstalk.FilterHandle('SharedData9eceb20d')
+      const keys = {"Not required":[1,2,3,4,5,6,7,8,9,10,11,12,13]}
+      return {
+        filter: function(value) {
+          if (!value) {
+            handle.clear()
+          } else {
+            handle.set(keys[value])
+          }
+        }
+      }
+    })()
+  </script>
 </div>
 </div>
 <div class="filter-group compact">
-<div id="requires_publication" class="form-group crosstalk-input-select crosstalk-input">
-<label class="control-label" for="requires_publication">
+<div class="filter-input">
+<label for="requires_publication">
 <label class="req-label">
 <svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z"></path></svg>
 Publication
 </label>
 </label>
-<div>
-<select multiple=""></select>
-<script type="application/json" data-for="requires_publication">{
-  "items": {
-    "value": ["Not Required", "Required"],
-    "label": ["Not Required", "Required"]
-  },
-  "map": {
-    "Not Required": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "11", "12", "13"],
-    "Required": ["10"]
-  },
-  "group": ["SharedData9eceb20d"]
-}</script>
-</div>
+<select id="requires_publication" onchange="window['__ct__requires_publication'].filter(this.value)" style="width: 100%">
+<option value="">All</option>
+<option value="Not required">Not required</option>
+<option value="Required">Required</option>
+</select>
+<script>
+    window['__ct__requires_publication'] = (function() {
+      const handle = new window.crosstalk.FilterHandle('SharedData9eceb20d')
+      const keys = {"Not required":[1,2,3,4,5,6,7,8,9,11,12,13],"Required":[10]}
+      return {
+        filter: function(value) {
+          if (!value) {
+            handle.clear()
+          } else {
+            handle.set(keys[value])
+          }
+        }
+      }
+    })()
+  </script>
 </div>
 </div>
 <div></div>
@@ -457,6 +473,17 @@ Publication
 </div>
 </div>
 <div class="experience-sliders">
+<div id="min-years-filter" class="slider-container">
+<div class="form-group crosstalk-input crosstalk-input-slider js-range-slider" id="minimum_years_post_phd">
+<label class="control-label" for="minimum_years_post_phd">Minimum years post-PhD</label>
+<input data-skin="shiny" data-type="double" data-min="2" data-max="2" data-from="2" data-to="2" data-step="1" data-grid="false" data-grid-snap="false" data-prettify-separator="," data-postfix="y" data-keyboard="true" data-keyboard-step="Inf" data-drag-interval="true" data-data-type="number">
+<script type="application/json" data-for="minimum_years_post_phd">{
+  "values": [2, "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"],
+  "keys": ["6", "1", "2", "3", "4", "5", "7", "8", "9", "10", "11", "12", "13"],
+  "group": ["SharedData9eceb20d"]
+}</script>
+</div>
+</div>
 <div id="max-years-filter" class="slider-container">
 <div class="form-group crosstalk-input crosstalk-input-slider js-range-slider" id="maximum_years_post_phd">
 <label class="control-label" for="maximum_years_post_phd">Maximum years post-PhD</label>
