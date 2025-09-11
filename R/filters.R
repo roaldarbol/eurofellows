@@ -181,7 +181,7 @@ create_compact_filters <- function(shared_fellowships) {
     
     hr(),
     
-    # Postdoc-only filters (collapsible section)
+    # Postdoc-only filters
     tags$div(
       id = "postdoc-advanced-filters",
       class = "filters-grid-main",
