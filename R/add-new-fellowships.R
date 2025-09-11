@@ -2,6 +2,7 @@ library(vroom)
 library(dplyr)
 library(janitor)
 library(lubridate)
+library(stringr)
 library(here)
 
 here::i_am("R/add-new-fellowships.R")
@@ -14,11 +15,14 @@ if (nrow(new_data) != 0){
     dplyr::rename(fellowship_funder = funder,
            fellowship_url = link,
            fellowship_duration = duration,
-           eligible_host_location = location,
-           eligible_institution = institution,
-           eligible_fields = academic_fields,
-           field_category_major = major_field,
-           field_category_minor = minor_field,
+           host_country = location,
+           host_institution = institution,
+           academic_field = academic_fields,
+           connection_country = eligible_country,
+           connection_type = connection_type,
+           connection_in_or_not = nationalities_in_or_not,
+           academic_field_category_major = major_field,
+           academic_field_category_minor = minor_field,
            requires_mobility = mobility_required,
            requires_phd = ph_d_certificate_required,
            requires_publication = publication_required,
@@ -26,25 +30,21 @@ if (nrow(new_data) != 0){
            maximum_years_post_phd = maximum_years_post_ph_d_2,
            contributor_name = your_name,
            contributor_url = profile_url,
-           date_created = created_at,
-           eligible_nationalities_from_or_not = nationalities_from_or_not) |> 
+           date_created = created_at) |> 
     dplyr::mutate(
       career_stage = as.factor(career_stage),
-      eligible_host_location = dplyr::if_else(
-        eligible_host_location == "Specific European country" | eligible_host_location == "Specific countries",
+      host_country = dplyr::if_else(
+        host_country == "Specific European country" | host_country == "Specific countries",
         eligible_countries,
-        eligible_host_location
+        host_country
       ),
-      eligible_nationalities = dplyr::if_else(
-        eligible_nationalities == "Specific countries", 
-        eligible_nationalities_2, 
-        eligible_nationalities),
-      eligible_fields = if_else(
-        is.na(eligible_fields), 
-        "Any field", 
-        eligible_fields),
-      field_category_major = as.factor(field_category_major),
-      field_category_minor = as.factor(field_category_minor),
+      connection_in_or_not = dplyr::if_else(
+        is.na(connection_in_or_not), 
+        NA, 
+        connection_in_or_not
+      ),
+      academic_field_category_major = as.factor(academic_field_category_major),
+      academic_field_category_minor = as.factor(academic_field_category_minor),
       application_deadline = lubridate::date(application_deadline),
       application_deadline = if_else(
         is.na(rolling_application_deadline), 
@@ -76,58 +76,88 @@ if (nrow(new_data) != 0){
          only_available_within_specific_fields,
          rolling_application_deadline,
          minimum_years_post_ph_d,
-         maximum_years_post_ph_d,
-         eligible_nationalities_2)) |> 
-    dplyr::relocate(eligible_nationalities, .after = eligible_institution) |> 
+         maximum_years_post_ph_d)) |> 
+    dplyr::relocate(connection_country, .after = host_institution) |> 
     dplyr::relocate(fellowship_duration, .after = fellowship_url) |> 
-    dplyr::relocate(eligible_nationalities_from_or_not, .before = eligible_nationalities)
+    dplyr::relocate(connection_type, .before = connection_country) |> 
+    dplyr::relocate(connection_in_or_not, .before = connection_country)
   
   attributes(new_data)$spec <- NULL
 }
 
 # Existing data
-existing_data <- vroom::vroom(here::here("data", "european-fellowships.csv")) |>
-  mutate(eligible_fields = if_else(is.na(eligible_fields), "Any field", eligible_fields),
-         eligible_nationalities = if_else(eligible_nationalities == "Any country worldwide", "Any country", eligible_nationalities)) |> 
-  rowwise() |> 
-  mutate(
-    requires_mobility = dplyr::if_else(
-      !isTRUE(requires_mobility),
-      "Not required",
-      "Required"),
-    requires_phd = dplyr::if_else(
-      !isTRUE(requires_phd),
-      "Not required",
-      "Required"),
-    requires_publication = dplyr::if_else(
-      !isTRUE(requires_publication),
-      "Not required",
-      "Required"),
-  )
+existing_data <- vroom::vroom(here::here("data", "european-fellowships.csv"))
+  # mutate(eligible_fields = if_else(is.na(eligible_fields), "Any field", eligible_fields),
+  #        eligible_nationalities = if_else(eligible_nationalities == "Any country worldwide", "Any country", eligible_nationalities)) |>
+  # dplyr::rename(eligible_connection = eligible_nationalities,
+  #               eligible_connection_in_or_not = eligible_nationalities_from_or_not) |> 
+  # rowwise() |> 
+  # mutate(
+  #   requires_mobility = dplyr::if_else(
+  #     !isTRUE(requires_mobility),
+  #     "Not required",
+  #     "Required"),
+  #   requires_phd = dplyr::if_else(
+  #     !isTRUE(requires_phd),
+  #     "Not required",
+  #     "Required"),
+  #   requires_publication = dplyr::if_else(
+  #     !isTRUE(requires_publication),
+  #     "Not required",
+  #     "Required"),
+  # )
 
 # Filter out duplicates
 new_data <- dplyr::anti_join(new_data, existing_data, by = "id")
 
 # Combine data
-combined_data <- new_data |>   
-  dplyr::bind_rows(existing_data) |> 
-  dplyr::arrange(application_deadline) |> 
-  mutate(
-    eligible_nationalities_from_or_not = case_when(
-      is.na(eligible_nationalities_from_or_not) ~ "From", 
-      eligible_nationalities_from_or_not == "From" ~ "From", 
-      .default = "Not from"
-    ),
-    eligible_host_location = eligible_host_location |> 
-      str_replace_all("(,(?=\\S)|:)", ", ") |> 
-      str_to_title(),
-    eligible_fields = eligible_fields |> 
-      str_replace_all("(,(?=\\S)|:)", ", ") |> 
-      str_to_title(),
-    eligible_nationalities = eligible_nationalities |> 
-      str_replace_all("(,(?=\\S)|:)", ", ") |> 
-      str_to_title()
-  )
+combined_data <- new_data |> 
+  dplyr::bind_rows(existing_data) |>
+  dplyr::arrange(application_deadline)
+  # mutate(connection_country = if_else(is.na(connection_country), "Not required", connection_country))
+  # rename(host_country = eligible_host_location,
+  #        host_institution = eligible_institution,
+  #        connection_type = eligible_connection_type,
+  #        connection_in_or_not = eligible_connection_in_or_not,
+  #        connection_country = eligible_connection,
+  #        academic_field = eligible_fields,
+  #        academic_field_category_major = field_category_major,
+  #        academic_field_category_minor = field_category_minor)
+  # mutate(minimum_years_post_phd = if_else(is.na(minimum_years_post_phd), 
+  #                                         0,
+  #                                         minimum_years_post_phd))
+  # mutate(
+  #   eligible_connection_in_or_not = case_when(
+  #     is.na(eligible_connection_in_or_not) ~ "In",
+  #     eligible_connection_in_or_not == "From" ~ "In",
+  #     .default = "Not in"
+  #   ),
+  #   eligible_host_location = eligible_host_location |> 
+  #     stringr::str_replace_all("(,(?=\\S)|:)", ", ") |> 
+  #     stringr::str_to_title(),
+  #   eligible_fields = eligible_fields |> 
+  #     stringr::str_replace_all("(,(?=\\S)|:)", ", ") |> 
+  #     stringr::str_to_title(),
+  #   eligible_connection = eligible_connection |> 
+  #     stringr::str_replace_all("(,(?=\\S)|:)", ", ") |> 
+  #     stringr::str_to_title(),
+  #   eligible_connection = if_else(
+  #     eligible_connection == "Any Country",
+  #     NA,
+  #     eligible_connection
+  #   ),
+  #   eligible_connection_in_or_not = if_else(
+  #     is.na(eligible_connection),
+  #     NA,
+  #     eligible_connection_in_or_not
+  #   ),
+  #   eligible_fields = if_else(
+  #     eligible_fields == "Any Field",
+  #     NA,
+  #     eligible_fields
+  #   )
+  # ) 
+
 
 # Update the file
 vroom::vroom_write(combined_data, here::here("data", "european-fellowships.csv"), delim = ";")

@@ -5,7 +5,7 @@
 #' 
 #' @param deadline_str String in format "YYYY-MM-DD"
 #' @return List with days_left and urgency_class
-calculate_urgency <- function(deadline_str) {
+calculate_urgency <- function(deadline_str, deadline_rolling) {
   # Handle NULL, NA, empty string, or missing values
   if (is.null(deadline_str) || length(deadline_str) == 0) {
     return(list(days_left = NA, urgency_class = "urgency-unknown", urgency_text = "Unknown"))
@@ -32,6 +32,9 @@ calculate_urgency <- function(deadline_str) {
   if (days_left < 0) {
     urgency_class <- "urgency-passed"
     urgency_text <- "Deadline passed"
+  } else if (deadline_rolling == TRUE){
+    urgency_class <- "urgency-normal"
+    urgency_text <- paste("Rolling deadline")
   } else if (days_left < 30) {
     urgency_class <- "urgency-critical"
     urgency_text <- paste(days_left, "days left")
@@ -54,7 +57,12 @@ calculate_urgency <- function(deadline_str) {
 #' 
 #' @param deadline_str String in format "YYYY-MM-DD"
 #' @return Formatted date string
-format_deadline <- function(deadline_str) {
+format_deadline <- function(deadline_str, deadline_rolling) {
+  # Handle rolling deadlines
+  if (deadline_rolling == TRUE) {
+    return("")
+  }
+  
   # Handle NULL, NA, empty string, or missing values
   if (is.null(deadline_str) || length(deadline_str) == 0) {
     return("TBD")
@@ -63,7 +71,7 @@ format_deadline <- function(deadline_str) {
   # Convert to character and check for problematic values
   deadline_str <- as.character(deadline_str)
   if (is.na(deadline_str) || deadline_str == "" || deadline_str == "NA" || deadline_str == "<NA>") {
-    return("TBD")
+    return("Rolling deadline")
   }
   
   # Try to parse and format the date safely
@@ -86,31 +94,50 @@ create_eligibility_badges <- function(row) {
   badges <- c()
   
   # Host countries
-  if (!is.na(row$eligible_host_location) && 
-      row$eligible_host_location != "" && 
-      is.list(row$eligible_host_location)) {
+  if (!is.na(row$host_country) && 
+      row$host_country != "" && 
+      is.list(row$host_country)) {
     
-    badges <- c(badges, if_else(is.na(row$eligible_institution), 
-                                paste(row$eligible_host_location[[1]], collapse = ", "), 
-                                paste(row$eligible_institution, paste(row$eligible_host_location[[1]], collapse = ", "), sep = ", ")))
+    badges <- c(badges, case_when(
+        is.na(row$host_institution[[1]]) ~ paste(row$host_country[[1]], collapse = ", "), 
+        length(row$host_institution[[1]]) == 1 ~ paste(paste(row$host_institution[[1]], collapse = ", "), paste(row$host_country[[1]], collapse = ", "), sep = ", "),
+        length(row$host_institution[[1]]) == 2 ~ paste(paste(row$host_institution[[1]], collapse = "& "), paste(row$host_country[[1]], collapse = ", "), sep = ", "),
+        length(row$host_institution[[1]]) > 2 ~ paste(
+          paste(row$host_institution[[1]], collapse = ", ") |> stringi::stri_replace_last(fixed = ',', ' &'),
+          paste(row$host_country[[1]], collapse = ", "),
+          sep = ", ")
+        )
+      )
+    badges <- unique(badges)
+  }
+  
+  # Starting grant
+  if (!is.na(row$starting_grant) && row$starting_grant != "") {
+    badges <- c(badges, paste("Starting grant"))
   }
   
   # Duration
   if (!is.na(row$fellowship_duration) && row$fellowship_duration != "") {
     badges <- c(badges, paste(row$fellowship_duration, "years"))
   }
+  
+  # Country connection requirement
+  # TODO: Needs to make some sensible statements out of connection_type, connection_in_or_not and connection_country
+  if (!is.na(row$connection_country) && row$connection_country != "Not required") {
+    badges <- c(badges, paste("Requires prior connection to", paste(row$connection_country, collapse = ", ")))
+  }
 
-  # # Academic field requirements
-  if (!is.na(row$eligible_fields) && 
-      row$eligible_fields != "" && 
-      row$eligible_fields != "Any Field" &&
-      is.list(row$eligible_fields)) {
+  # Academic field requirements
+  if (!is.na(row$academic_field) && 
+      row$academic_field != "" && 
+      row$academic_field != "Any Field" &&
+      is.list(row$academic_field)) {
     
-    badges <- c(badges, paste("Limited to", paste(row$eligible_fields[[1]], collapse = ", ")))
+    badges <- c(badges, paste("Limited to", paste(row$academic_field[[1]], collapse = ", ")))
   }
   
   # PhD experience requirements
-  if (!is.na(row$minimum_years_post_phd) && row$minimum_years_post_phd != "") {
+  if (!is.na(row$minimum_years_post_phd) && row$minimum_years_post_phd != "" && row$minimum_years_post_phd > 0) {
     badges <- c(badges, paste("Min", row$minimum_years_post_phd, "years post-PhD"))
   }
   
@@ -138,7 +165,9 @@ create_eligibility_badges <- function(row) {
   badge_elements <- lapply(badges, function(badge) {
     # Use different icons for different types of requirements
     icon <- if (badge == badges[1]) "📍"
+    else if (grepl("Starting", badge)) "🚀"
     else if (grepl("years", badge) && !grepl("PhD", badge)) {"⏱️"}
+    else if (grepl("connection", badge)) "🏠"
     else if (grepl("Limited", badge)) "🔬"
     else if (grepl("post-PhD", badge)) "⏳" 
     else if (grepl("Mobility", badge)) "✈️"
@@ -172,8 +201,8 @@ render_fellowship_card <- function(value, index) {
   row <- data[index, ]
   
   # Calculate deadline urgency
-  urgency_info <- calculate_urgency(row$application_deadline)
-  formatted_deadline <- format_deadline(row$application_deadline)
+  urgency_info <- calculate_urgency(row$application_deadline, row$application_deadline_rolling)
+  formatted_deadline <- format_deadline(row$application_deadline, row$application_deadline_rolling)
   
   # Card container with urgency-based styling
   tags$div(

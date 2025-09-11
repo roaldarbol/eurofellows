@@ -80,18 +80,18 @@ create_compact_filters <- function(shared_fellowships) {
                 "Filter Fellowships"
         )
       ),
-      tags$div(
-        # class = "career-pills",
-        create_career_stage_filter(shared_fellowships),
-        # crosstalk::filter_checkbox(
-        #   id = "career_stage",
-        #   label = NULL, 
-        #   shared_fellowships,
-        #   ~career_stage,
-        #   inline = TRUE
-        #   # multiple = TRUE
-        # )
-      )
+      # tags$div(
+      #   # class = "career-pills",
+      #   create_career_stage_filter(shared_fellowships),
+      #   # crosstalk::filter_checkbox(
+      #   #   id = "career_stage",
+      #   #   label = NULL, 
+      #   #   shared_fellowships,
+      #   #   ~career_stage,
+      #   #   inline = TRUE
+      #   #   # multiple = TRUE
+      #   # )
+      # )
     ),
     
     # Main filters in compact grid
@@ -106,12 +106,12 @@ create_compact_filters <- function(shared_fellowships) {
         tags$div(
           class = "filter-group compact",
           reactable_select_filter(
-            "eligible_host_location",
+            "host_country",
             label =  tags$label(class = "filter-label",
                                 tags$span(class = "filter-icon", fa("location-dot")), 
                                 "Host country"),
             shared_fellowships,
-            "eligible_host_location"
+            "host_country"
           )
         ),
         
@@ -119,27 +119,23 @@ create_compact_filters <- function(shared_fellowships) {
         tags$div(
           class = "filter-group compact",
           reactable_select_filter(
-            "eligible_fields", 
+            "academic_field", 
             label = tags$label(class = "filter-label", 
                                tags$span(class = "filter-icon", fa("microscope")), 
-                               "Field"
+                               "Academic Field"
             ),
             shared_fellowships, 
-            "eligible_fields"
+            "academic_field"
           )
         ),
         
-        # Nationality
         tags$div(
           class = "filter-group compact",
           reactable_select_filter(
-            "eligible_nationalities", 
-            label = tags$label(class = "filter-label", 
-                               tags$span(class = "filter-icon", fa("flag")), 
-                               "Nationality"
-            ),
-            shared_fellowships, 
-            "eligible_nationalities"
+            "starting_grant",
+            label = tags$label(class = "filter-label", fa("plane-departure"), "Starting Grant"),
+            shared_fellowships,
+            "starting_grant"
           )
         )
       ),
@@ -183,22 +179,37 @@ create_compact_filters <- function(shared_fellowships) {
       )
     ),
     
+    hr(),
+    
     # Postdoc-only filters (collapsible section)
     tags$div(
       id = "postdoc-advanced-filters",
-      class = "advanced-filters-section",
-      style = "display: block;", # Show by default for postdoc
+      class = "filters-grid-main",
+      # style = "display: block;", # Show by default for postdoc
       
-      tags$h5("Postdoc-specific"),
+      # tags$h5("Postdoc-specific"),
       tags$div(
-        class = "filter-row-postdoc",
+        class = "filter-row-quad",
         
         # Requirements (compact dropdowns)
         tags$div(
           class = "filter-group compact",
           reactable_select_filter(
+            "connection_country", 
+            label = tags$label(class = "filter-label", fa("flag"), "Connection to Country"),
+            shared_fellowships, 
+            "connection_country",
+            choices = c(
+              "Not required",
+              sort(setdiff(unique(data$connection_country), "Not required"))
+            )
+          )
+        ),
+        tags$div(
+          class = "filter-group compact",
+          reactable_select_filter(
             "requires_mobility",
-            label = tags$label(class = "req-label", fa("plane-departure"), "Mobility"),
+            label = tags$label(class = "filter-label", fa("plane-departure"), "Mobility"),
             shared_fellowships,
             "requires_mobility"
           )
@@ -207,7 +218,7 @@ create_compact_filters <- function(shared_fellowships) {
           class = "filter-group compact",
           reactable_select_filter(
             "requires_phd",
-            label = tags$label(class = "req-label", fa("graduation-cap"), "PhD (by application deadline)"),
+            label = tags$label(class = "filter-label", fa("graduation-cap"), "PhD (by application deadline)"),
             shared_fellowships,
             "requires_phd" #~stringr::str_to_title(requires_phd)
           )
@@ -216,35 +227,24 @@ create_compact_filters <- function(shared_fellowships) {
           class = "filter-group compact",
           reactable_select_filter(
             "requires_publication",
-            label = tags$label(class = "req-label", fa("far fa-pen-to-square"), "Publication"),
+            label = tags$label(class = "filter-label", fa("far fa-pen-to-square"), "Publication"),
             shared_fellowships,
             "requires_publication"#~stringr::str_to_title(requires_publication),
           )
-        ),
-        tags$div(),
-        tags$div(
-          class = "filter-toggles",
-          tags$label(
-            class = "toggle-checkbox",
-            tags$input(type = "checkbox", id = "toggle-min-years"),
-            tags$span(class = "toggle-text", "Min years")
-          ),
-          tags$label(
-            class = "toggle-checkbox",
-            tags$input(type = "checkbox", id = "toggle-max-years"),
-            tags$span(class = "toggle-text", "Max years")
-          )
         )
       ),
-      
       tags$div(
-        class = "experience-sliders",
+        class = "filter-row-double",
+        
+        # Min years
         tags$div(
-          id = "min-years-filter",
-          class = "slider-container",
+          class = "filter-group compact",
           crosstalk::filter_slider(
-            id = "minimum_years_post_phd",
-            "Minimum years post-PhD",
+            id = "min-years-filter",
+            label = tags$label(class = "filter-label",
+                               tags$span(class = "filter-icon", fa("hourglass-start")), 
+                               "Minimum years post-PhD"
+            ),
             sharedData = shared_fellowships,
             column = ~minimum_years_post_phd,
             post = "y",
@@ -252,12 +252,16 @@ create_compact_filters <- function(shared_fellowships) {
             ticks = FALSE
           )
         ),
+        
+        # Max years
         tags$div(
-          id = "max-years-filter",
-          class = "slider-container",
+          class = "filter-group compact",
           crosstalk::filter_slider(
-            id = "maximum_years_post_phd",
-            "Maximum years post-PhD",
+            id = "max-years-filter",
+            label = tags$label(class = "filter-label",
+                               tags$span(class = "filter-icon", fa("hourglass-end")), 
+                               "Maximum years post-PhD"
+            ),
             sharedData = shared_fellowships,
             column = ~maximum_years_post_phd,
             post = "y",
@@ -266,28 +270,58 @@ create_compact_filters <- function(shared_fellowships) {
           )
         )
       )
+      
+      # tags$div(
+      #   class = "experience-sliders",
+      #   tags$div(
+      #     id = "min-years-filter",
+      #     class = "slider-container",
+      #     crosstalk::filter_slider(
+      #       id = "minimum_years_post_phd",
+      #       "Minimum years post-PhD",
+      #       sharedData = shared_fellowships,
+      #       column = ~minimum_years_post_phd,
+      #       post = "y",
+      #       step = 1,
+      #       ticks = FALSE
+      #     )
+      #   ),
+      #   tags$div(
+      #     id = "max-years-filter",
+      #     class = "slider-container",
+      #     crosstalk::filter_slider(
+      #       id = "maximum_years_post_phd",
+      #       "Maximum years post-PhD",
+      #       sharedData = shared_fellowships,
+      #       column = ~maximum_years_post_phd,
+      #       post = "y",
+      #       step = 1,
+      #       ticks = FALSE
+      #     )
+      #   )
+      # )
     ),
     
     # Slider toggle functionality
-    tags$script(HTML("
-      document.addEventListener('DOMContentLoaded', function() {
-        function bindSliderToggle(checkboxId, sliderId) {
-          const checkbox = document.getElementById(checkboxId);
-          const sliderDiv = document.getElementById(sliderId);
-          
-          if (checkbox && sliderDiv) {
-            function updateSliderVisibility() {
-              sliderDiv.style.display = checkbox.checked ? 'block' : 'none';
-            }
-            
-            checkbox.addEventListener('change', updateSliderVisibility);
-            updateSliderVisibility(); // Initial state
-          }
-        }
-        
-        bindSliderToggle('toggle-min-years', 'min-years-filter');
-        bindSliderToggle('toggle-max-years', 'max-years-filter');
-      });
-    "))
+    # tags$script(HTML("
+    #   document.addEventListener('DOMContentLoaded', function() {
+    #     function bindSliderToggle(checkboxId, sliderId) {
+    #       const checkbox = document.getElementById(checkboxId);
+    #       const sliderDiv = document.getElementById(sliderId);
+    #       
+    #       if (checkbox && sliderDiv) {
+    #         function updateSliderVisibility() {
+    #           sliderDiv.style.display = checkbox.checked ? 'block' : 'none';
+    #         }
+    #         
+    #         checkbox.addEventListener('change', updateSliderVisibility);
+    #         updateSliderVisibility(); // Initial state
+    #       }
+    #     }
+    #     
+    #     bindSliderToggle('toggle-min-years', 'min-years-filter');
+    #     bindSliderToggle('toggle-max-years', 'max-years-filter');
+    #   });
+    # "))
   )
 }

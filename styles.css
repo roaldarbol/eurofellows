@@ -174,9 +174,17 @@ h5 {
   padding-right: 20px;
 }
 
+.filter-row-quad {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  column-gap: 20px;
+  padding-right: 20px;
+}
+
 .filter-row-postdoc {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 4px;
 }
 
@@ -705,6 +713,12 @@ select {
   }
   
   .filter-row-double {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding-left: 20px;
+  }
+  
+  .filter-row-quad {
     grid-template-columns: 1fr;
     gap: 12px;
     padding-left: 20px;

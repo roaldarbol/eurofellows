@@ -36,6 +36,7 @@ library(readxl)
 library(crosstalk)
 library(janitor)
 library(stringr)
+library(stringi)
 library(lubridate)
 library(fontawesome)
 
@@ -50,7 +51,7 @@ set.seed(123)
 ```{r load-data}
 #| include: FALSE
 data <- vroom::vroom("data/european-fellowships.csv") |>
-  dplyr::arrange(application_deadline) |>
+  dplyr::filter(career_stage == "Postdoc") |> 
   dplyr::mutate(
     dplyr::across(
       dplyr::where(~ is.character(.x) && any(grepl(",", .x, fixed = TRUE), na.rm = TRUE)) & !matches("comments") & !matches("fellowship_title"),
@@ -58,7 +59,25 @@ data <- vroom::vroom("data/european-fellowships.csv") |>
       .names = "{.col}"
     )
   ) |> 
-  dplyr::filter(application_deadline > lubridate::today())
+  dplyr::mutate(application_deadline_rolling = if_else(
+    is.na(application_deadline), 
+    TRUE,
+    FALSE
+  ),
+  application_deadline = if_else(
+    is.na(application_deadline), 
+    lubridate::today(),
+    application_deadline
+  )) |> 
+  dplyr::filter(application_deadline >= lubridate::today()) |>
+  dplyr::mutate(starting_grant = if_else(starting_grant == TRUE,
+                                         "Starting Grant",
+                                         "Fellowship")) |> 
+  dplyr::arrange(
+    desc(application_deadline_rolling), 
+    fellowship_duration,
+    application_deadline
+    )
 ```
 
 ```{r setup-crosstalk}
@@ -101,14 +120,17 @@ fellowship_table <- reactable(
     fellowship_funder = colDef(show = FALSE),
     fellowship_url = colDef(show = FALSE),
     fellowship_duration = colDef(show = FALSE),
+    starting_grant = colDef(show = FALSE),
     application_deadline = colDef(show = FALSE),
-    eligible_host_location = colDef(show = FALSE),
-    eligible_institution = colDef(show = FALSE),
-    eligible_nationalities_from_or_not = colDef(show = FALSE),
-    eligible_nationalities = colDef(show = FALSE),
-    eligible_fields = colDef(show = FALSE),
-    field_category_major = colDef(show = FALSE),
-    field_category_minor = colDef(show = FALSE),
+    application_deadline_rolling = colDef(show = FALSE),
+    host_country = colDef(show = FALSE),
+    host_institution = colDef(show = FALSE),
+    connection_type = colDef(show = FALSE),
+    connection_in_or_not = colDef(show = FALSE),
+    connection_country = colDef(show = FALSE),
+    academic_field = colDef(show = FALSE),
+    academic_field_category_major = colDef(show = FALSE),
+    academic_field_category_minor = colDef(show = FALSE),
     requires_mobility = colDef(show = FALSE),
     requires_phd = colDef(show = FALSE),
     requires_publication = colDef(show = FALSE),
@@ -141,9 +163,8 @@ fellowship_table <- reactable(
 )
 ```
 
-```{r create-ui}
-#| echo: FALSE
-
+```{r create.ui}
+#| echo: false
 # Assemble the complete UI
 div(
   class = "fellowships",
@@ -152,6 +173,8 @@ div(
   
   # Fellowship cards table
   fellowship_table,
+  
+  # Download button
   htmltools::browsable(
     tags$button(class = "download-btn", 
                 tags$label(class = "filter-label-download",
@@ -163,17 +186,13 @@ div(
 )
 ```
 
-```{js echo=FALSE}
+```{r phd-checkbox}
+#| eval: FALSE 
+#| include: FALSE
+
 function filter_default() {
     document.getElementById("career_stage").getElementsByClassName("selectized")[0].selectize.setValue("Postdoc", true);
     document.getElementById("career_stage").getElementsByClassName("selectized")[0].selectize.setValue("PhD", true);
  }
 window.onload = filter_default;
-
-function remove_all_option() {
-  document.getElementById("eligible_host_location").getElementsByClassName("selectized")[0].selectize.removeOption("");
-  document.getElementById("eligible_fields").getElementsByClassName("selectized")[0].selectize.removeOption("");
-  document.getElementById("eligible_nationalities").getElementsByClassName("selectized")[0].selectize.removeOption("");
-}
-window.onload = remove_all_option;
 ```
