@@ -75,9 +75,9 @@ data <- vroom::vroom("data/european-fellowships.csv") |>
                                          "Fellowship")) |> 
   dplyr::arrange(
     desc(application_deadline_rolling), 
-    fellowship_duration,
     application_deadline,
-    host_country
+    host_country,
+    fellowship_duration,
     )
 ```
 
