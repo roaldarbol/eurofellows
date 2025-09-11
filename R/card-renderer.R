@@ -123,8 +123,10 @@ create_eligibility_badges <- function(row) {
   
   # Country connection requirement
   # TODO: Needs to make some sensible statements out of connection_type, connection_in_or_not and connection_country
-  if (!is.na(row$connection_country) && row$connection_country != "Not required") {
+  if (!is.na(row$connection_country) && row$connection_country != "Not required" && row$connection_in_or_not == "In") {
     badges <- c(badges, paste("Requires prior connection to", paste(row$connection_country, collapse = ", ")))
+  } else if (!is.na(row$connection_country) && row$connection_country != "Not required" && row$connection_in_or_not != "In") {
+    badges <- c(badges, paste("No prior connection to", paste(row$connection_country, collapse = ", ")))
   }
 
   # Academic field requirements
