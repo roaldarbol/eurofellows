@@ -28,6 +28,9 @@ website:
     border: false
     left: "2025, Mikkel Roald-Arbøl"
     center:
+      - text: Submit fellowship
+        href: https://opnform.com/forms/european-fellowships-gqocnm
+        target: _blank
       - text: Report issue
         href:  https://github.com/roaldarbol/eu-fellowships/issues
       - text: Source Code
@@ -39,6 +42,7 @@ format:
     css: styles.css
     toc: false
     page-layout: full
+    backgroundcolor: "#E6EEFF"
     header-includes: |
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

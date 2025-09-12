@@ -97,8 +97,10 @@ fellowship_table <- reactable(
   striped = FALSE,
   wrap = TRUE,
   class = "fellowship-table enhanced-cards",  # Added "enhanced-cards" class
+  # pagination = FALSE, # Disable pagination
+  # height = 600, # Disable pagination
   pagination = TRUE,
-  defaultPageSize = 24,
+  defaultPageSize = 12,
   showPageSizeOptions = TRUE,
   pageSizeOptions = c(12, 24, 100),
   
@@ -167,16 +169,20 @@ div(
   
   # Fellowship cards table
   fellowship_table,
+  # tags$br(), # If pagination is off
   
   # Download button
-  htmltools::browsable(
-    tags$button(class = "download-btn", 
-                tags$label(class = "filter-label-download",
-                           tags$span(class = "filter-icon", 
-                                     fa("download")), 
-                           "Download as CSV"), 
-                onclick = "Reactable.downloadDataCSV('fellowship_table', 'european-fellowships.csv')")
-    )
+  tags$div(
+    class = "download-btn-container",
+    htmltools::browsable(
+      tags$button(class = "download-btn", 
+                  tags$label(class = "filter-label-download",
+                             tags$span(class = "filter-icon", 
+                                       fa("download")), 
+                             "Download as CSV"), 
+                  onclick = "Reactable.downloadDataCSV('fellowship_table', 'european-fellowships.csv')")
+      )
+  )
 )
 ```
 
