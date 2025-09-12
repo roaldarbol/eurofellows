@@ -3,15 +3,17 @@ project:
   output-dir: docs
 
 website:
-  title: "European Fellowship Index"
-  favicon: assets/eu-favicon.png
+  title: Eurofellows
+  description: "The European Fellowship Index. Volunteer-driven, non-profit and fully open source."
+  site-url: https://eurofellows.org
+  favicon: assets/eurofellows-round.svg #assets/eu-favicon.png
   search: false
   navbar:
     title: false
     style: "docked"
     page-navigation: false
     back-to-top-navigation: true
-    logo: assets/eu.jpg # assets/fox-contour.svg
+    # logo: assets/eurofellows-no-background.svg # assets/fox-contour.svg
     background: "#003399" # Only for testing the fellowship dashboard
     tools:
       - icon: github

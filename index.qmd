@@ -1,14 +1,24 @@
 ---
 title: |
-  European Fellowship Index
+  <center>
+  <img src="assets/eurofellows-no-background.svg" alt="Eurofellows logo" height="120%"> EUROFELLOWS
+  <style> img{ height: 1.2em; } </style>
+  </center>
+subtitle: | 
+  <center>
+  <b>The European Fellowship Index</b> \ 
+  Volunteer-driven, non-profit and fully open source
+  </center>
 description-title: |
   A dashboard for European fellowship opportunities with filtering and search capabilities.
+image: assets/eurofellows-no-background.svg
 format: 
   html:
     page-layout: full
     backgroundcolor: "#E6EEFF"
     css: styles.css
     header-includes: |
+      
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
