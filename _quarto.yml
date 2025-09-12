@@ -32,16 +32,24 @@ website:
         href:  https://github.com/roaldarbol/eu-fellowships/issues
       - text: Source Code
         href:  https://github.com/roaldarbol/eu-fellowships
-    
-    
 
 format:
   html:
-    theme:
-      - cosmo
-      - brand
+    theme: cosmo
     css: styles.css
     toc: false
+    page-layout: full
+    header-includes: |
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+      <script async data-nf='{"formurl":"https://opnform.com/forms/european-fellowships-gqocnm","emoji":"📝","position":"right","bgcolor":"#3B82F6","width":800}' src='https://opnform.com/widgets/embed-min.js'></script>
+      <script src="site_libs/strftime-0.9.2/strftime-min.js"></script>
+      <script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+      <!-- 100% privacy-first analytics -->
+      <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+      <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
 
 
 
