@@ -6,7 +6,7 @@ website:
   title: Eurofellows
   description: "The European Fellowship Index. Volunteer-driven, non-profit and fully open source."
   site-url: https://eurofellows.org
-  favicon: assets/eurofellows-round.svg #assets/eu-favicon.png
+  favicon: assets/eurofellows-round.svg
   search: false
   navbar:
     title: false
@@ -14,7 +14,7 @@ website:
     page-navigation: false
     back-to-top-navigation: true
     # logo: assets/eurofellows-no-background.svg # assets/fox-contour.svg
-    background: "#003399" # Only for testing the fellowship dashboard
+    background: "#003399"
     tools:
       - icon: github
         href:  https://github.com/roaldarbol/eu-fellowships
@@ -35,6 +35,9 @@ website:
         href:  https://github.com/roaldarbol/eu-fellowships/issues
       - text: Source Code
         href:  https://github.com/roaldarbol/eu-fellowships
+brand:
+  light: brand/light.yml
+  dark: brand/dark.yml
 
 format:
   html:
@@ -42,7 +45,6 @@ format:
     css: styles.css
     toc: false
     page-layout: full
-    backgroundcolor: "#E6EEFF"
     header-includes: |
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

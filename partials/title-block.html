@@ -1,0 +1,69 @@
+$if(title)$
+<header id="title-block-header" class="quarto-title-block default">
+  <div class="quarto-title-banner page-columns page-full"$if(title-block-banner)$ style="background: $title-block-banner$;"$endif$>
+    <div class="quarto-title column-body" style="text-align: center;">
+      <h1 class="title" style="display: flex !important; align-items: center !important; justify-content: center !important; gap: 0.75rem !important; flex-wrap: wrap !important; margin: 0 !important;">
+        $if(logo)$
+        <img src="$logo$" alt="Logo" style="height: 1.2em !important; vertical-align: baseline !important; flex-shrink: 0 !important;">
+        $endif$
+        <span style="line-height: 1.2 !important;">$title$</span>
+      </h1>
+      
+      $if(subtitle)$
+      <p class="subtitle lead"><strong>$subtitle$</strong><br> $description-title$</p>
+      $endif$
+      
+      $if(author)$
+      <div class="quarto-title-authors">
+        <div class="quarto-title-author">
+          $for(author)$
+          <div class="quarto-title-author-name">
+            $if(author.name)$
+            <strong>$author.name$</strong>
+            $else$
+            <strong>$author$</strong>
+            $endif$
+            $if(author.affiliation)$
+            <div class="quarto-title-affiliation">
+              $author.affiliation$
+            </div>
+            $endif$
+            $if(author.email)$
+            <div class="quarto-title-author-email">
+              <a href="mailto:$author.email$">$author.email$</a>
+            </div>
+            $endif$
+          </div>
+          $endfor$
+        </div>
+      </div>
+      $endif$
+      
+      $if(date)$
+      <div class="quarto-title-meta">
+        <div class="quarto-title-meta-heading">Published</div>
+        <div class="quarto-title-meta-contents">
+          <p class="date">$date$</p>
+        </div>
+      </div>
+      $endif$
+      
+      $if(abstract)$
+      <div class="abstract">
+        <div class="abstract-title">Abstract</div>
+        <p>$abstract$</p>
+      </div>
+      $endif$
+      
+      $if(keywords)$
+      <div class="keywords">
+        <div class="keywords-title">Keywords</div>
+        <div class="keywords-list">
+          $for(keywords)$<span class="keyword">$keywords$</span>$sep$, $endfor$
+        </div>
+      </div>
+      $endif$
+    </div>
+  </div>
+</header>
+$endif$

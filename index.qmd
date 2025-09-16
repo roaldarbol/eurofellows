@@ -1,19 +1,11 @@
 ---
-title: |
-  <center>
-  <img src="assets/eurofellows-no-background.svg" alt="Eurofellows logo" height="120%"> EUROFELLOWS
-  <style> img{ height: 1.2em; } </style>
-  </center>
-subtitle: | 
-  <center>
-  <b>The European Fellowship Index</b> \ 
-  Volunteer-driven, non-profit and open source
-  </center>
-description-title: |
-  A dashboard for European fellowship opportunities with filtering and search capabilities.
-image: assets/eurofellows-no-background.svg
-toc: false
+title: EUROFELLOWS
+subtitle: The European Fellowship Index
+description-title: Volunteer-driven, non-profit and open source
+logo: assets/eurofellows-no-background.svg
 title-block-banner: "linear-gradient(rgba(0, 51, 153, 1), rgba(0, 51, 153, 0.3))"
+template-partials: 
+  - partials/title-block.html
 ---
 
 ```{r setup}

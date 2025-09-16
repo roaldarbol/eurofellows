@@ -2,7 +2,7 @@
    TYPOGRAPHY & FONTS
    =================================================================== */
 
-#quarto-document-content .title {
+#quarto-document-content .title:not(#title-block-title) {
   display: none;
 }
 
