@@ -30,60 +30,6 @@ h5 {
 }
 
 /* ===================================================================
-   TITLE BLOCK & NAVBAR GAP FIXES
-   =================================================================== */
-
-/* Remove gap between title block and navbar */
-.quarto-title-block {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-.quarto-title-banner {
-  margin-bottom: 0 !important;
-  border-bottom: none !important;
-}
-
-.navbar {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-  border-top: none !important;
-}
-
-.navbar-nav {
-  border-top: none !important;
-}
-
-/* Safari-specific fixes */
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-  .quarto-title-block .quarto-title-banner {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-  
-  .navbar-brand {
-    margin-top: 0 !important;
-  }
-}
-
-/* Mobile-specific adjustments */
-@media (max-width: 768px) {
-  .quarto-title-block {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
-  }
-  
-  .navbar {
-    margin-top: 0 !important;
-    border-top: none !important;
-  }
-  
-  .navbar-toggler {
-    margin-top: 0 !important;
-  }
-}
-
-/* ===================================================================
    ACCESSIBILITY IMPROVEMENTS
    =================================================================== */
 
